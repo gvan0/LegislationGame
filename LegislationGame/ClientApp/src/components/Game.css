@@ -1,0 +1,107 @@
+body {
+  background-color: #EAEBE7;
+  padding-left:50px;
+  padding-right:50px;
+}
+
+.blue-row{
+  margin-left: 100px;
+  margin-right: 100px;
+}
+.card-container{
+  height: 300px;
+  position: relative;
+  background-color: white;
+  overflow: hidden;
+  z-index: 20;
+  box-shadow: 2px 2px 2px #B3B3B3;
+  margin-top:20px;
+  margin-bottom:50px;
+}
+
+.btn-group{
+  margin-top: 70px;
+}
+
+.blue{
+  background-color: #008cba;
+}
+
+
+.red{
+  background-color: #FF5351;
+}
+
+.box {
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  display: table;
+  bottom: 0;
+}
+
+.draw-a-card {
+  display: table-cell;
+  vertical-align: middle;
+  font-family: Oswald;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.card-title{
+  vertical-align: middle;
+  font-family: Oswald;
+  text-align: center;
+  font-size: 50px;
+}
+
+.card {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+
+.card-inner {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.page-header h1 {
+  text-align: center;
+  font-family: Oswald;
+  margin-top: 70px;
+}
+
+.white{
+  background-color: white;
+}
+
+.white-text{
+  color:white;
+}
+
+.empty{
+  color:gray;
+  border:dotted;
+}
+
+.users-cards {
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+.users-cards > .col-md-4 {
+  display: inline-block;
+  float: none;
+}
+.users-cards > .col-md-2 {
+  display: inline-block;
+  float: none;
+}
+
+.icon{
+  font-size: 100px;
+  text-align: center;
+}
