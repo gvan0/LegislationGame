@@ -9,7 +9,7 @@ export default class Player extends Component {
         if (props.Hand == undefined) {
             this.state = {
                 name: props.name,
-                redCards: this.createRedCards(),
+                redCards: this.createRedCards(4,false),
                 money: 4
             };
         } else {
@@ -22,16 +22,17 @@ export default class Player extends Component {
         this.createRedCards = this.createRedCards.bind(this);
     }
 
-    createRedCards() {
-        const iconOptions = ["", "fas fa-handshake", "fas fa-balance-scale", "fas fa-book", "fas fa-flag-usa", "fas fa-piggy-bank", "fas fa-dove", "fas fa-baby", "fas fa-bell"];
+    createRedCards(size,mounted) {
         var builtSlate = [];
-        while (builtSlate.length < 4) {
+        while (builtSlate.length < size) {
             var pickissue = Math.floor(Math.random() * 8) + 1;
-            if (builtSlate.find(item => item.key == pickissue) == undefined) {
-                var newissue = { key: pickissue, icon: iconOptions[pickissue], impact: (Math.random() >= 0.5 ? "+" : "-") }
+            if (builtSlate.find(item => item.state.issue == pickissue) == undefined) {
+                var newissue = new RedCard({ issue: pickissue, score: (Math.random() >= 0.5 ? 1 : -1) });
                 builtSlate[builtSlate.length] = newissue;
             }
         }
+        if (mounted)
+            this.setState({ redCards: builtSlate });
         return (builtSlate);
 
     }
@@ -56,14 +57,13 @@ export default class Player extends Component {
             <div>
                 <div className="page-header"><h1>MY HAND</h1></div>
 
-                <div>{this.state.name}</div>
+                <div>{this.props.Hand.state.name}</div>
                 <div className='col-md-8'>
                     <div className="row users-cards">
-                        {this.state.redCards.map(law => < RedCard key={law.key} cardInfo={law} > </RedCard>)}
-                        {this.emptySpace()}
+                        {this.props.Hand.state.redCards.map(law => < RedCard Issue={law} key={law.state.issue} > </RedCard>)}
                     </div>
                 </div>
-                <p>Money: {this.state.money}</p>
+                <p>Money: {this.props.Hand.state.money}</p>
             </div>
 
         );

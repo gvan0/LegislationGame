@@ -2,6 +2,7 @@
 import Law from './Law.js';
 import Bill from './Bill.js';
 import Player from './Player.js';
+import Issue from './Issue.js';
 import Parameters from './Parameters.js'
 import './Game.css';
 
@@ -34,17 +35,19 @@ export class Game extends Component {
             return;
 
         if (Slate.Ayes > Slate.Nays) {
+            var searchLaw = undefined;
             var newLaw = this.state.MyLaw;
             var PassedBill = Slate.blueCards;
             for (var pb_law = 0; pb_law < PassedBill.length; pb_law++) {
-                var searchLaw = newLaw.state.Laws.find(item => item.key === PassedBill[pb_law].key);
+                searchLaw = newLaw.state.Laws.find(item => item.state.issue === PassedBill[pb_law].state.issue);
                 //TODO: Check for conflicting laws
                 if (searchLaw === undefined)
                     newLaw.state.Laws[newLaw.state.Laws.length] = PassedBill[pb_law];
-                else if (searchLaw.impact !== PassedBill[pb_law].impact) {
+                else {
+                    searchLaw = new Issue({ issue: searchLaw.state.issue, score: searchLaw.state.score + PassedBill[pb_law].state.score });
                     for (var z = 0; z < newLaw.state.Laws.length; z++) {
-                        if (newLaw.state.Laws[z].key === PassedBill[pb_law].key) {
-                            newLaw.state.Laws[z].impact = PassedBill[pb_law].impact;
+                        if (newLaw.state.Laws[z].state.issue === PassedBill[pb_law].state.issue) {
+                            newLaw.state.Laws[z] = searchLaw;
                             break;
                         }
 
@@ -56,9 +59,11 @@ export class Game extends Component {
             var goalsPassed = 0;
             var phand = this.state.MyPlayer.state.redCards;
             for (var y = 0; y < this.state.handSize; y++) {
-                var searchLaw = this.state.MyLaw.state.Laws.find(item => item.key === phand[y].key && item.impact === phand[y].impact);
-                if (searchLaw != undefined)
-                    goalsPassed++;
+                searchLaw = this.state.MyLaw.state.Laws.find(item => item.state.issue === phand[y].state.issue);
+                if (searchLaw !== undefined) {
+                    if(phand[y].scoreAlign(searchLaw.state.score))
+                        goalsPassed++;
+                }
             }
             if (goalsPassed >= this.state.handSize)
                 alert(this.state.MyPlayer.state.name + " wins!");
@@ -68,7 +73,10 @@ export class Game extends Component {
         this.setState({ MyBill: new Bill() });
 
         //TODO: Hand out money based on voting results
-        //this.state.MyPlayer.setState({ money: this.state.MyPlayer.money + 1 });
+        var MyNewPlayer = this.state.MyPlayer;
+        MyNewPlayer.state = { name: MyNewPlayer.state.name, redCards: MyNewPlayer.state.redCards, money: MyNewPlayer.state.money + 1 };
+        this.setState({ MyPlayer: MyNewPlayer });
+        this.forceUpdate();
     }
 
     render() {
@@ -78,7 +86,7 @@ export class Game extends Component {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-md-9 col-xs-10"><Bill Slate={this.state.MyBill} onUpdate={this.reviseBill} onVote={this.handleVote}></Bill></div>
+                    <div className="col-md-9 col-xs-10"><Bill Slate={Slate} onUpdate={this.reviseBill} onVote={this.handleVote}></Bill></div>
                     <div className="col-md-3 col-xs-2"><Law ActiveLaw={MyLaw}></Law></div>
                 </div>
                 <Player Hand={MyHand}></Player>

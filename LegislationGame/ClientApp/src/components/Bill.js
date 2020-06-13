@@ -6,9 +6,9 @@ export default class Bill extends Component {
 
     constructor(props) {
         super(props);
-        if (props == undefined) {
+        if (props === undefined) {
             this.state = {
-                blueCards: this.createBlueCards(2),
+                blueCards: [],
                 Ayes: 0,
                 Nays: 0
             };
@@ -25,34 +25,34 @@ export default class Bill extends Component {
         this.addAcard = this.addAcard.bind(this);
     }
 
-    createBlueCards(size){
-        const iconOptions = ["", "fas fa-handshake", "fas fa-balance-scale", "fas fa-book", "fas fa-flag-usa", "fas fa-piggy-bank", "fas fa-dove", "fas fa-baby", "fas fa-bell"];
+    createBlueCards(size,mounted){
         var builtSlate = [];
         if (this.props !== undefined) {
             if(this.props.Slate !== undefined)
                 builtSlate = this.props.Slate.state.blueCards;
         }
-        if (builtSlate.length == 8)
+        if (builtSlate.length === 8)
             return (builtSlate);
         while (builtSlate.length < size) {
             var pickissue = Math.floor(Math.random() * 8) + 1;
-            if (builtSlate.find(item => item.key == pickissue) == undefined) {
-                var newissue = { key: pickissue, icon: iconOptions[pickissue], impact: (Math.random() >= 0.5 ? "+" : "-") }
+            if (builtSlate.find(item => item.state.issue === pickissue) === undefined) {
+                var newissue = new BlueCard({ issue: pickissue, score: (Math.random() >= 0.5 ? 1 : -1) });
                 builtSlate[builtSlate.length] = newissue;
             }
         }
-        this.setState({ blueCards: builtSlate });
+        if(mounted)
+            this.setState({ blueCards: builtSlate });
         return (builtSlate);
 
         /*return ([
             {
             key: Math.floor(Math.random() * this.props.blueDeckSize) + 1,
             icon: iconOptions[key],
-            impact: "+"
+            impact: "►"
         }, {
             key: Math.floor(Math.random() * 8) + 1,
             icon: iconOptions[key],
-            impact: "-"
+            impact: "◄"
         }]
         )*/
     }
@@ -62,9 +62,8 @@ export default class Bill extends Component {
     }
 
     addAcard() {
-        //alert("Drawing...");
-        this.props.Slate.state.blueCards = this.createBlueCards(this.props.Slate.state.blueCards.length + 1);
-        this.props.onUpdate(this.props.Slate);
+        this.props.Slate.state.blueCards = this.createBlueCards(this.props.Slate.state.blueCards.length + 1, true);
+        //this.props.onUpdate(this.props.Slate);
     }
 
     deck() {
@@ -146,8 +145,7 @@ export default class Bill extends Component {
                         {this.deck()}
                         <div className="col-md-9">
                             <div className="row users-cards">
-                                {this.props.Slate.state.blueCards.map(law => < BlueCard key={law.key} cardInfo={law} > </BlueCard>)}
-                                {this.emptySpot()}
+                                {this.props.Slate.state.blueCards.map(law => < BlueCard Issue={law} key={law.state.issue} > </BlueCard>)}
                             </div>
                         </div>
                     </div>

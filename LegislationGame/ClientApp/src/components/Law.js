@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
-import './Law.css'
+import Issue from './Issue.js';
+import './Law.css';
 
 export default class Law extends Component {
     static displayName = Law.name;
@@ -17,7 +18,7 @@ export default class Law extends Component {
                 <h1>ACTIVE LAWS</h1>
                 <ul className='activeLaws'>
                     {this.state.Laws.map(item =>
-                        <li key={item.key}>{item.key}:  <i className={item.icon}></i> : {item.impact}</li>
+                        <Issue key={item.state.issue} issue={item.state.issue} score ={item.state.score} ></Issue>
                     )}
                 </ul>
             </div>
