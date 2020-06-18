@@ -3,7 +3,8 @@ import Law from './Law.js';
 import Bill from './Bill.js';
 import Player from './Player.js';
 import Issue from './Issue.js';
-import Parameters from './Parameters.js'
+import BlueCard from './BlueCard.js';
+import Parameters from './Parameters.js';
 import './Game.css';
 
 export class Game extends Component {
@@ -22,14 +23,23 @@ export class Game extends Component {
         };
         this.reviseBill = this.reviseBill.bind(this);
         this.handleVote = this.handleVote.bind(this);
+        this.replaceCard = this.replaceCard.bind(this);
     }
 
     reviseBill(Slate) {
         this.setState({ MyBill: Slate });
     }
 
+    replaceCard(issue, score, key) {
+        var newBill = this.state.MyBill;
+        var newCards = newBill.state.blueCards;
+        var repIssue = new BlueCard({ issue, score });
+        newCards[key] = repIssue;
+        this.state.MyBill.setState({ blueCards: newCards });
+        //this.setState({ MyBill: newBill });
+    }
+
     handleVote(Slate) {
-        //var Slate = this.state.MyBill.state;
         this.setState({ MyBill: Slate });
         if (Slate.Ayes + Slate.Nays < this.state.playerCount)
             return;
@@ -40,7 +50,7 @@ export class Game extends Component {
             var PassedBill = Slate.blueCards;
             for (var pb_law = 0; pb_law < PassedBill.length; pb_law++) {
                 searchLaw = newLaw.state.Laws.find(item => item.state.issue === PassedBill[pb_law].state.issue);
-                //TODO: Check for conflicting laws
+
                 if (searchLaw === undefined)
                     newLaw.state.Laws[newLaw.state.Laws.length] = PassedBill[pb_law];
                 else {
@@ -55,7 +65,7 @@ export class Game extends Component {
                 }
             }
             this.setState({ MyLaw: newLaw });
-            //TODO: Check victory conditions
+
             var goalsPassed = 0;
             var phand = this.state.MyPlayer.state.redCards;
             for (var y = 0; y < this.state.handSize; y++) {
@@ -72,7 +82,6 @@ export class Game extends Component {
 
         this.setState({ MyBill: new Bill() });
 
-        //TODO: Hand out money based on voting results
         var MyNewPlayer = this.state.MyPlayer;
         MyNewPlayer.state = { name: MyNewPlayer.state.name, redCards: MyNewPlayer.state.redCards, money: MyNewPlayer.state.money + 1 };
         this.setState({ MyPlayer: MyNewPlayer });
@@ -86,7 +95,7 @@ export class Game extends Component {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-md-9 col-xs-10"><Bill Slate={Slate} onUpdate={this.reviseBill} onVote={this.handleVote}></Bill></div>
+                    <div className="col-md-9 col-xs-10"><Bill Slate={Slate} onUpdate={this.reviseBill} onVote={this.handleVote} onEdit={this.replaceCard}></Bill></div>
                     <div className="col-md-3 col-xs-2"><Law ActiveLaw={MyLaw}></Law></div>
                 </div>
                 <Player Hand={MyHand}></Player>

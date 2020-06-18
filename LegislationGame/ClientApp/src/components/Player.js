@@ -60,7 +60,7 @@ export default class Player extends Component {
                 <div>{this.props.Hand.state.name}</div>
                 <div className='col-md-8'>
                     <div className="row users-cards">
-                        {this.props.Hand.state.redCards.map(law => < RedCard Issue={law} key={law.state.issue} > </RedCard>)}
+                        {this.props.Hand.state.redCards.map((law, index) => < RedCard Issue={law} key={index} > </RedCard>)}
                     </div>
                 </div>
                 <p>Money: {this.props.Hand.state.money}</p>

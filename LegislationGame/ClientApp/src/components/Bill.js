@@ -43,18 +43,6 @@ export default class Bill extends Component {
         if(mounted)
             this.setState({ blueCards: builtSlate });
         return (builtSlate);
-
-        /*return ([
-            {
-            key: Math.floor(Math.random() * this.props.blueDeckSize) + 1,
-            icon: iconOptions[key],
-            impact: "►"
-        }, {
-            key: Math.floor(Math.random() * 8) + 1,
-            icon: iconOptions[key],
-            impact: "◄"
-        }]
-        )*/
     }
 
     votes() {
@@ -145,7 +133,7 @@ export default class Bill extends Component {
                         {this.deck()}
                         <div className="col-md-9">
                             <div className="row users-cards">
-                                {this.props.Slate.state.blueCards.map(law => < BlueCard Issue={law} key={law.state.issue} > </BlueCard>)}
+                                {this.props.Slate.state.blueCards.map((law, index) => < BlueCard key={index} issue={law.state.issue} score={law.state.score} onEdit={this.props.onEdit} > </BlueCard>)}
                             </div>
                         </div>
                     </div>
