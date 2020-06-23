@@ -9,7 +9,7 @@ export default class Law extends Component {
         super(props);
         if (props === undefined || props.ActiveLaw === undefined) {
             var seedLaws = [];
-            for (var x = 0; x < 8; x++) {
+            for (var x = 0; x < props.size; x++) {
                 seedLaws[x] = new Issue({ issue:x+1, score:0});
             }
             this.state = { Laws: seedLaws };

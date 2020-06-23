@@ -9,12 +9,14 @@ export default class Player extends Component {
         if (props.Hand == undefined) {
             this.state = {
                 name: props.name,
-                redCards: this.createRedCards(4,false),
+                MyParams: props.Params,
+                redCards: this.createRedCards(props.Params.state.handSize, props.Params.state.blueDeckSize,false),
                 money: 4
             };
         } else {
             this.state = {
                 name: props.Hand.state.name,
+                MyParams: props.Params,
                 redCards: props.Hand.state.redCards,
                 money: props.Hand.state.money
             };
@@ -22,10 +24,10 @@ export default class Player extends Component {
         this.createRedCards = this.createRedCards.bind(this);
     }
 
-    createRedCards(size,mounted) {
+    createRedCards(redSize, blueSize, mounted) {
         var builtSlate = [];
-        while (builtSlate.length < size) {
-            var pickissue = Math.floor(Math.random() * 8) + 1;
+        while (builtSlate.length < redSize) {
+            var pickissue = Math.floor(Math.random() * blueSize) + 1;
             if (builtSlate.find(item => item.state.issue == pickissue) == undefined) {
                 var newissue = new RedCard({ issue: pickissue, score: (Math.random() >= 0.5 ? 1 : -1) });
                 builtSlate[builtSlate.length] = newissue;

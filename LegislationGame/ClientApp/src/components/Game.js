@@ -13,17 +13,16 @@ export class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            blueDeckSize: 8,
-            playerCount: 1,
-            billSize: 2,
-            handSize: 4,
-            MyLaw: new Law(),
-            MyBill: new Bill(),
-            MyPlayer: new Player({ name: "Player 1" })
+            init: false,
+            MyParams: new Parameters({blueDeckSize: 8, billSize: 2, handSize: 4}),
+            MyLaw: undefined,
+            MyBill: undefined,
+            MyPlayer: undefined
         };
         this.reviseBill = this.reviseBill.bind(this);
         this.handleVote = this.handleVote.bind(this);
         this.replaceCard = this.replaceCard.bind(this);
+        this.joinGame = this.joinGame.bind(this);
     }
 
     reviseBill(Slate) {
@@ -80,26 +79,44 @@ export class Game extends Component {
             
         }
 
-        this.setState({ MyBill: new Bill() });
+        this.setState({ MyBill: new Bill({ deckSize: this.state.MyParams.state.blueDeckSize }) });
 
         var MyNewPlayer = this.state.MyPlayer;
         MyNewPlayer.state = { name: MyNewPlayer.state.name, redCards: MyNewPlayer.state.redCards, money: MyNewPlayer.state.money + 1 };
         this.setState({ MyPlayer: MyNewPlayer });
-        this.forceUpdate();
+    }
+
+    joinGame(params) {
+        this.setState({
+            init: true,
+            MyParams: params,
+            MyLaw: new Law({ size: params.state.blueDeckSize }),
+            MyBill: new Bill({ deckSize: params.state.blueDeckSize }),
+            MyPlayer: new Player({ name: "Player 1", Params: params })
+        });
     }
 
     render() {
-        var Slate = this.state.MyBill;
-        var MyLaw = this.state.MyLaw;
-        var MyHand = this.state.MyPlayer;
-        return (
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-md-9 col-xs-10"><Bill Slate={Slate} onUpdate={this.reviseBill} onVote={this.handleVote} onEdit={this.replaceCard}></Bill></div>
-                    <div className="col-md-3 col-xs-2"><Law ActiveLaw={MyLaw}></Law></div>
+        if (!this.state.init) {
+            return (
+                <Parameters blueDeckSize={this.state.MyParams.state.blueDeckSize}
+                            billSize={this.state.MyParams.state.billSize}
+                            handSize={this.state.MyParams.state.handSize}
+                    onInitGame={this.joinGame}> </Parameters>
+            );
+        } else {
+            var Slate = this.state.MyBill;
+            var MyLaw = this.state.MyLaw;
+            var MyHand = this.state.MyPlayer;
+            return (
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-9 col-xs-10"><Bill Slate={Slate} onUpdate={this.reviseBill} onVote={this.handleVote} onEdit={this.replaceCard} deckSize={this.state.MyParams.state.blueDeckSize }></Bill></div>
+                        <div className="col-md-3 col-xs-2"><Law ActiveLaw={MyLaw} size={this.state.MyParams.state.blueDeckSize} ></Law></div>
+                    </div>
+                    <Player Hand={MyHand}></Player>
                 </div>
-                <Player Hand={MyHand}></Player>
-            </div>
-        );
+            );
+        }
     }
 }

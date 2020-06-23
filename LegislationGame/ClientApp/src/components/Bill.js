@@ -6,15 +6,17 @@ export default class Bill extends Component {
 
     constructor(props) {
         super(props);
-        if (props === undefined) {
+        if (props.Slate === undefined) {
             this.state = {
                 blueCards: [],
+                deckSize: props.deckSize,
                 Ayes: 0,
                 Nays: 0
             };
         } else {
             this.state = {
                 blueCards: props.Slate.state.blueCards,
+                deckSize: props.deckSize,
                 Ayes: 0,
                 Nays: 0
             };
@@ -31,10 +33,10 @@ export default class Bill extends Component {
             if(this.props.Slate !== undefined)
                 builtSlate = this.props.Slate.state.blueCards;
         }
-        if (builtSlate.length === 8)
+        if (builtSlate.length === this.state.billSize)
             return (builtSlate);
         while (builtSlate.length < size) {
-            var pickissue = Math.floor(Math.random() * 8) + 1;
+            var pickissue = Math.floor(Math.random() * this.state.deckSize) + 1;
             if (builtSlate.find(item => item.state.issue === pickissue) === undefined) {
                 var newissue = new BlueCard({ issue: pickissue, score: (Math.random() >= 0.5 ? 1 : -1) });
                 builtSlate[builtSlate.length] = newissue;
