@@ -33,7 +33,7 @@ export default class Bill extends Component {
             if(this.props.Slate !== undefined)
                 builtSlate = this.props.Slate.state.blueCards;
         }
-        if (builtSlate.length === this.state.billSize)
+        if (builtSlate.length === this.state.bill_size)
             return (builtSlate);
         while (builtSlate.length < size) {
             var pickissue = Math.floor(Math.random() * this.state.deckSize) + 1;

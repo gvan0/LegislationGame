@@ -10,7 +10,7 @@ export default class Player extends Component {
             this.state = {
                 name: props.name,
                 MyParams: props.Params,
-                redCards: this.createRedCards(props.Params.state.handSize, props.Params.state.blueDeckSize,false),
+                redCards: this.createRedCards(props.Params.state.hand_size, props.Params.state.deck_size,false),
                 money: 4
             };
         } else {

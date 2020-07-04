@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Game } from './components/Game';
+import { Host } from './components/Host';
 
 import './custom.css'
 
@@ -14,6 +15,7 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/game' component={Game} />
+        <Route path='/host' component={Host} />
       </Layout>
     );
   }
