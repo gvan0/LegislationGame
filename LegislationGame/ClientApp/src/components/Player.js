@@ -6,7 +6,7 @@ export default class Player extends Component {
 
     constructor(props) {
         super(props);
-        if (props.Hand == undefined) {
+        if (props.Hand === undefined) {
             this.state = {
                 name: props.name,
                 MyParams: props.Params,
@@ -28,7 +28,7 @@ export default class Player extends Component {
         var builtSlate = [];
         while (builtSlate.length < redSize) {
             var pickissue = Math.floor(Math.random() * blueSize) + 1;
-            if (builtSlate.find(item => item.state.issue == pickissue) == undefined) {
+            if (builtSlate.find(item => item.state.issue === pickissue) === undefined) {
                 var newissue = new RedCard({ issue: pickissue, score: (Math.random() >= 0.5 ? 1 : -1) });
                 builtSlate[builtSlate.length] = newissue;
             }

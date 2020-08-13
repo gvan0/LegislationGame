@@ -14,5 +14,6 @@ namespace LegislationGame.Models
         }
 
         public DbSet<Game> Game { get; set; }
+        public DbSet<Law> Law { get; set; }
     }
 }

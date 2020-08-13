@@ -16,43 +16,49 @@ export class Game extends Component {
         this.state = {
             init: false
         };
-        this.reviseBill = this.reviseBill.bind(this);
+        this.blankSlate = this.blankSlate.bind(this);
         this.handleVote = this.handleVote.bind(this);
         this.replaceCard = this.replaceCard.bind(this);
         this.joinGame = this.joinGame.bind(this);
     }
 
-    reviseBill(Slate) {
-        this.setState({ MyBill: Slate });
-    }
-
-    replaceCard(issue, score, key) {
+    replaceCard(issue, score) {
         var newBill = this.state.MyBill;
         var newCards = newBill.state.blueCards;
         var repIssue = new BlueCard({ issue, score });
-        newCards[key] = repIssue;
-        this.state.MyBill.setState({ blueCards: newCards });
+        newCards[issue-1] = repIssue;
+        newBill.setState({blueCards: newCards});
+        this.state.MyBill.setState({ MyBill: newBill });
+    }
+
+    blankSlate(size) {
+        var blankLaw = [];
+        for (var x = 0; x < size; x++) {
+            var iss = new Issue({ issue: x + 1, score: 0 });
+            blankLaw[x] = iss;
+        }
+        return blankLaw;
     }
 
     handleVote(Slate) {
         this.setState({ MyBill: Slate });
-        if (Slate.Ayes + Slate.Nays < this.state.playerCount)
+        if (Slate.state.Ayes + Slate.state.Nays < this.state.playerCount)
             return;
 
-        if (Slate.Ayes > Slate.Nays) {
-            var searchLaw = undefined;
+        if (Slate.state.Ayes > Slate.state.Nays) {
+            //var searchLaw = undefined;
             var newLaw = this.state.MyLaw;
-            var PassedBill = Slate.blueCards;
+            var PassedBill = Slate.state.blueCards;
             for (var pb_law = 0; pb_law < PassedBill.length; pb_law++) {
-                searchLaw = newLaw.state.Laws.find(item => item.state.issue === PassedBill[pb_law].state.issue);
+                var searchLaw1 = newLaw.state.Laws.find(item => item.state.issue === PassedBill[pb_law].state.issue);
 
-                if (searchLaw === undefined)
+                if (searchLaw1 === undefined)
                     newLaw.state.Laws[newLaw.state.Laws.length] = PassedBill[pb_law];
                 else {
-                    searchLaw = new Issue({ issue: searchLaw.state.issue, score: searchLaw.state.score + PassedBill[pb_law].state.score });
+                    searchLaw1 = new Issue({ issue: searchLaw1.state.issue, score: searchLaw1.state.score + PassedBill[pb_law].state.score });
                     for (var z = 0; z < newLaw.state.Laws.length; z++) {
                         if (newLaw.state.Laws[z].state.issue === PassedBill[pb_law].state.issue) {
-                            newLaw.state.Laws[z] = searchLaw;
+                            newLaw.state.Laws[z] = searchLaw1;
                             break;
                         }
 
@@ -64,18 +70,20 @@ export class Game extends Component {
             var goalsPassed = 0;
             var phand = this.state.MyPlayer.state.redCards;
             for (var y = 0; y < this.state.MyParams.state.hand_size; y++) {
-                searchLaw = this.state.MyLaw.state.Laws.find(item => item.state.issue === phand[y].state.issue);
-                if (searchLaw !== undefined) {
-                    if(phand[y].scoreAlign(searchLaw.state.score))
+                var searchLaw2 = this.state.MyLaw.state.Laws.find(item => item.state.issue === phand[y].state.issue);
+                if (searchLaw2 !== undefined) {
+                    if(phand[y].scoreAlign(searchLaw2.state.score))
                         goalsPassed++;
                 }
             }
             if (goalsPassed >= this.state.MyParams.state.hand_size)
                 alert(this.state.MyPlayer.state.name + " wins!");
-            
+
         }
 
-        this.setState({ MyBill: new Bill({ deckSize: this.state.MyParams.state.deck_size }) });
+        Slate.setState({ proposed: false, Ayes: 0, Nays: 0, blueCards: Slate.blankSlate(this.state.MyParams.state.deck_size) });
+
+        this.setState({ MyBill: Slate });
 
         var MyNewPlayer = this.state.MyPlayer;
         MyNewPlayer.state = { name: MyNewPlayer.state.name, redCards: MyNewPlayer.state.redCards, money: MyNewPlayer.state.money + 1 };
@@ -95,15 +103,19 @@ export class Game extends Component {
             };
             this.setState({
                 init: true,
+                playerCount: 1,
                 MyParams: newParams,
-                MyLaw: new Law({ size: newGame.deck_size }),
+                MyLaw: new Law({ game_id: game, ActiveLaw: this.blankSlate(newGame.deck_size) }),
                 MyBill: new Bill({ deckSize: newGame.deck_size }),
                 MyPlayer: new Player({ name: user, Params: newParams})
             });
             alert("Game loaded: " + newGame.name);
         })
-        .catch(function (response) {
-            alert("Something went wrong\n" + response);
+        .catch(function (error) {
+            if (error.response.status === 404) {
+                alert("Game not found. Please check your spelling.");
+            } else 
+                alert("Something went wrong: Game.js\n" + error.message);
         });
     }
 
@@ -120,7 +132,7 @@ export class Game extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-9 col-xs-10"><Bill Slate={Slate} onUpdate={this.reviseBill} onVote={this.handleVote} onEdit={this.replaceCard} deckSize={this.state.MyParams.state.deck_size }></Bill></div>
-                        <div className="col-md-3 col-xs-2"><Law ActiveLaw={MyLaw} size={this.state.MyParams.state.deck_size} ></Law></div>
+                        <div className="col-md-3 col-xs-2"><Law game_id={this.state.MyParams.state.gameCode} ActiveLaw={MyLaw.state.Laws} ></Law></div>
                     </div>
                     <Player Hand={MyHand}></Player>
                 </div>

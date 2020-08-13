@@ -1,12 +1,8 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
 import Issue from './Issue.js';
 
 export default class RedCard extends Issue {
     static displayName = RedCard.name;
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (

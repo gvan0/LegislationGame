@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+﻿import React from 'react';
 import Issue from './Issue.js';
 
 export default class BlueCard extends Issue {
@@ -57,53 +57,26 @@ export default class BlueCard extends Issue {
     }
 
     render() {
-        if (this.state.edit)
-            return (
-                <div className="col-md-4">
-                    <div className="card-container">
-                        <div className="card item" data-name="card-1">
-                            <div className="card-title white icon">
-                                <i className={this.state.icon}></i>
-                            </div>
-                            <div className="d-flex">
-                                <button className="btn btn-dark" value="-1" onClick={this.bumpIssue}> ◄ </button>
-                                <input type="text" className="form-control flex-fill" value={this.state.issue} onChange={this.handleIssueChange} />
-                                <button className="btn btn-dark" value="1" onClick={this.bumpIssue}> ► </button>
-                            </div>
-                            <div className="d-flex">
-                                <button className="btn btn-dark" value="-1" onClick={() => this.setState({ score: this.state.score - 1}) }> ◄ </button>
-                                <input type="text" className="form-control flex-fill" value={this.state.score} onChange={this.handleScoreChange} />
-                                <button className="btn btn-dark" value="1" onClick={() => this.setState({ score: this.state.score + 1}) }> ► </button>
-                            </div>
-                            <div className="d-flex btn-group">
-                                <button type="button" className="btn btn-success flex-fill" onClick={this.saveChanges}><i className="fas fa-check"></i></button>
-                                <button type="button" className="btn btn-danger flex-fill" onClick={() => this.setState({issue: this.props.issue, icon:this.iconOptions()[this.props.issue], score: this.props.score, edit: false}) }><i className="fas fa-times"></i></button>
-                            </div> 
+        return (
+            <div className="col-md-4">
+                <div className="card-container">
+                    <div className="card item" data-name="card-1">
+                        <div className="box blue">
+                            <p className="draw-a-card white-text">
+                                CARD {this.state.issue}
+                            </p>
+                        </div>
+                        <div className="card-inner white icon">
+                            <i className={this.state.icon}></i>
+                            <p className="card-title ">
+                                {this.state.score > 0 ? "►" :
+                                    this.state.score < 0 ? "◄" : "O"}
+                            </p>
                         </div>
                     </div>
                 </div>
-            );
-        else
-            return (
-                <div className="col-md-4">
-                    <div className="card-container">
-                        <div className="card item" data-name="card-1">
-                            <div className="box blue">
-                                <p className="draw-a-card white-text" onClick={() => this.setState({ edit: true })}>
-                                    CARD {this.state.issue}
-                                </p>
-                            </div>
-                            <div className="card-inner white icon">
-                                <i className={this.state.icon}></i>
-                                <p className="card-title ">
-                                    {this.state.score > 0 ? "►" :
-                                     this.state.score < 0 ? "◄" : "O"}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
+            </div>
+        );
     }
 
 

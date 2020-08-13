@@ -1,32 +1,48 @@
 ﻿import React, { Component } from 'react';
 import Issue from './Issue.js';
 import './Law.css';
+import axios from 'axios';
 
 export default class Law extends Component {
     static displayName = Law.name;
 
-    constructor(props) {
+    /*constructor(props) {
         super(props);
-        if (props === undefined || props.ActiveLaw === undefined) {
-            var seedLaws = [];
-            for (var x = 0; x < props.size; x++) {
-                seedLaws[x] = new Issue({ issue:x+1, score:0});
-            }
-            this.state = { Laws: seedLaws };
+        if (props.ActiveLaw === undefined) {
+            this.state = {
+                game_id: props.game_id,
+                Laws: []
+            };
+
         } else {
             this.state = {
-                Laws: (props === undefined ? [] : props.ActiveLaw.state.Laws)
+                game_id: props.game_id,
+                Laws: props.ActiveLaw
             };
         }
-    }
+    }*/
+
+    /*componentDidMount() {
+        axios.get("api/Game/" + this.state.game_id)
+            .then(response => {
+                const newGame = response.data;
+                this.setState({
+                    Laws: newGame.law
+                });
+            })
+            .catch(function (response) {
+                alert("Something went wrong: Law.js\n" + response);
+            });
+    }*/
 
     render() {
+        var getlaws = this.props.ActiveLaw;
         return (
             <div id="LAWS" className='page-header'>
                 <h1>ACTIVE LAWS</h1>
                 <ul className='activeLaws'>
-                    {this.state.Laws.map(item =>
-                        <Issue key={item.state.issue} issue={item.state.issue} score ={item.state.score} ></Issue>
+                    {getlaws.map(item =>
+                        <Issue key={item.state.issue} issue={item.state.issue} score={item.state.score} ></Issue>
                     )}
                 </ul>
             </div>

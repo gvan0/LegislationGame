@@ -7,12 +7,15 @@ export default class Login extends Component {
         super(props);
         this.state = {
             userName: "",
-            passWord: "",
-            gameCode: ""
+            userPass: "",
+            gameCode: "",
+            gamePass: "",
+            loading: false
         }
-        this.changeGameCode = this.changeGameCode.bind(this);
-        this.changePassWord = this.changePassWord.bind(this);
         this.changeUserName = this.changeUserName.bind(this);
+        this.changeUserPass = this.changeUserPass.bind(this);
+        this.changeGameCode = this.changeGameCode.bind(this);
+        this.changeGamePass = this.changeGamePass.bind(this);
         this.createGame = this.createGame.bind(this);
     }
 
@@ -20,15 +23,20 @@ export default class Login extends Component {
     changeUserName(event) {
         this.setState({ userName: event.target.value });
     }
-    changePassWord(event) {
-        this.setState({ passWord: event.target.value });
+    changeUserPass(event) {
+        this.setState({ userPass: event.target.value });
     }
     changeGameCode(event) {
         this.setState({ gameCode: event.target.value });
     }
+    changeGamePass(event) {
+        this.setState({ gamePass: event.target.value });
+    }
 
     createGame() {
+        this.setState({ loading: true });
         this.props.onInitGame(this.state.userName, this.state.gameCode);
+        this.setState({ loading: false });
     }
 
     render() {
@@ -41,14 +49,19 @@ export default class Login extends Component {
                             <input type="text" className="form-control" value={this.state.userName} id="userName" onChange={this.changeUserName} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="gameCode">Password:</label>
-                            <input type="password" className="form-control" value={this.state.passWord} id="passWord" onChange={this.changePassWord} />
+                            <label htmlFor="userPass">User Password:</label>
+                            <input type="password" className="form-control" value={this.state.userPass} id="userPass" onChange={this.changeUserPass} />
                         </div>
                         <div className="form-group">
                             <label htmlFor="gameCode">Game Code:</label>
                             <input type="text" className="form-control" value={this.state.gameCode} id="gameCode" onChange={this.changeGameCode} />
                         </div>
+                        <div className="form-group">
+                            <label htmlFor="gamePass">Game Password:</label>
+                            <input type="password" className="form-control" value={this.state.gamePass} id="gamePass" onChange={this.changeGamePass} />
+                        </div>
                         <button type="button" className="btn btn-primary" onClick={this.createGame}>START</button>
+                        {(this.state.loading === true) && (<p>Loading...</p>)}
                     </form>
                 </div>
             </div>

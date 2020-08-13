@@ -36,6 +36,8 @@ namespace LegislationGame.Controllers
             if (game == null)
                 return NotFound();
 
+            game.law = _context.Law.Where(item => item.game_id == game.ID);
+
             return game;
         }
 
@@ -43,9 +45,9 @@ namespace LegislationGame.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(int id, Game game)
+        public async Task<IActionResult> PutGame(string id, Game game)
         {
-            if (id != game.Id)
+            if (id != game.name)
             {
                 return BadRequest();
             }
@@ -79,9 +81,17 @@ namespace LegislationGame.Controllers
         {
             game.start_time = DateTime.UtcNow;
             _context.Game.Add(game);
+            //TODO: Generate random laws
+            for(int x = 1; x <= game.deck_size; x++)
+            {
+                Law l = new Law();
+                l.game_id = game.ID;
+                l.issue_id = x;
+                l.score = 0;
+            }
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGame", new { id = game.Id }, game);
+            return CreatedAtAction("GetGame", new { id = game.ID }, game);
         }
 
         // DELETE: api/Game/5
@@ -100,9 +110,9 @@ namespace LegislationGame.Controllers
             return game;
         }
 
-        private bool GameExists(int id)
+        private bool GameExists(string id)
         {
-            return _context.Game.Any(e => e.Id == id);
+            return _context.Game.Any(e => e.name == id);
         }
     }
 }
