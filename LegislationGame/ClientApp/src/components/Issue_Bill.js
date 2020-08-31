@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import Issue from './Issue.js'
 
-export default class Issue_Bill extends Issue {
+export default class IssueBill extends Issue {
     static displayName = Issue.name;
 
     iconOptions() {
@@ -48,9 +48,9 @@ export default class Issue_Bill extends Issue {
             <li>
                 <div className="input-group input-group-lg mb-2">
                     <div className="input-group-prepend"><span className="input-group-text"><span className={this.state.icon}></span></span></div>
-                    <button className="btn btn-dark" value="-1" onClick={this.handleScoreChange}> ◄ </button>
+                    <button className="btn btn-dark" value="-1" onClick={this.bumpScoreChange}> ◄ </button>
                     <input className="form-control" type="text" value={this.state.score} onChange={this.handleScoreChange} />
-                    <button className="btn btn-dark" value="1" onClick={this.handleScoreChange}> ► </button>
+                    <button className="btn btn-dark" value="1" onClick={this.bumpScoreChange}> ► </button>
                 </div>
             </li>
         );

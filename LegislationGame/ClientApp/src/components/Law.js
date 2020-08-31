@@ -6,7 +6,7 @@ import axios from 'axios';
 export default class Law extends Component {
     static displayName = Law.name;
 
-    /*constructor(props) {
+    constructor(props) {
         super(props);
         if (props.ActiveLaw === undefined) {
             this.state = {
@@ -20,7 +20,7 @@ export default class Law extends Component {
                 Laws: props.ActiveLaw
             };
         }
-    }*/
+    }
 
     /*componentDidMount() {
         axios.get("api/Game/" + this.state.game_id)
