@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Game } from './components/Game';
 import { Host } from './components/Host';
+import { Register } from './components/Register';
 
 import './custom.css'
 
@@ -16,6 +17,7 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/game' component={Game} />
         <Route path='/host' component={Host} />
+        <Route path='/register' component={Register} />
       </Layout>
     );
   }

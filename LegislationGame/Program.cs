@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace LegislationGame
+namespace com.nordstrands.games.Legislation
 {
     public class Program
     {

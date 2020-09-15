@@ -13,6 +13,7 @@ export default class Bill extends Component {
             blueCards: this.blankSlate(props.deckSize),
             proposed: false,
             deckSize: props.deckSize,
+            billID: 0,
             Ayes: 0,
             Nays: 0
         };
@@ -33,7 +34,17 @@ export default class Bill extends Component {
     }
 
     sendProposal() {
-        this.setState({proposed: true, Ayes: 0, Nays: 0 });
+        this.setState({ proposed: true, Ayes: 0, Nays: 0 });
+        /*axios.post('api/Bill', {
+            blueCards: this.state.blueCards,
+            gameID: this.props.game_id,
+            proposed: true
+        }).then(function () {
+            this.setState({ proposed: true, Ayes: 0, Nays: 0 })
+        }).catch(function (error) {
+            alert("Something went wrong: Bill.js\n" + error.message);
+            console.log(error.toJSON());
+        });*/
     }
 
     replaceIssue(key, score) {
@@ -72,14 +83,28 @@ export default class Bill extends Component {
     }
 
     castVote(cast) {
-        //TODO: axios.put
+        //TODO: axios.post();
+        /*axios.post('api/Bill', {
+            blueCards: this.state.blueCards,
+            proposed: true
+        }).then(function () {
+            this.setState({ proposed: true, Ayes: 0, Nays: 0 })
+        }).catch(function (error) {
+            alert("Something went wrong: Game.js\n" + error.message);
+            console.log(error.toJSON());
+        });*/
 
-        if (cast > 0) {
+        if (cast === 'A') {
             this.setState({ Ayes: this.state.Ayes + 1 });
-        }
-        else if (cast < 0) {
+        } else if (cast === 'N') {
             this.setState({ Nays: this.state.Nays + 1 });
-        }
+        } else if (cast === 'P') {
+            this.setState({ Ayes: 0, Nays: 0 });
+        } else if (cast === 'M') {
+            this.amendProposal();
+        } else if (cast === 'X') {
+            this.closeVote();
+        } 
     }
 
     render() {
@@ -99,14 +124,14 @@ export default class Bill extends Component {
                     <div className='col-md-12'>
                         <div className='row justify-content-center'>
                             <div className="btn-group btn-group-justified">
-                                <button className='btn-lg btn-success' onClick={() => this.castVote(1)} > AYE ({this.state.Ayes}) </button>
-                                <button className='btn-lg btn-danger' onClick={() => this.castVote(-1)} > NAY ({this.state.Nays}) </button>
-                                <button className='btn-lg btn-primary' disabled onClick={() => this.castVote(0)} > PRESENT </button>
+                                <button className='btn-lg btn-success' onClick={() => this.castVote('A')} > AYE ({this.state.Ayes}) </button>
+                                <button className='btn-lg btn-danger' onClick={() => this.castVote('N')} > NAY ({this.state.Nays}) </button>
+                                <button className='btn-lg btn-primary' disabled onClick={() => this.castVote('P')} > PRESENT </button>
                             </div>
                         </div>
                         <div className='row justify-content-center'>
-                            <button className='btn-lg btn-warning' onClick={() => this.amendProposal()} > AMEND </button>
-                            <button className='btn-lg btn-dark' disabled={this.state.Ayes + this.state.Nays === 0} onClick={() => this.closeVote()} > CLOSE VOTE </button>
+                            <button className='btn-lg btn-warning' onClick={() => this.castVote('M')} > AMEND </button>
+                            <button className='btn-lg btn-dark' disabled={this.state.Ayes + this.state.Nays === 0} onClick={() => this.castVote('X')} > CLOSE VOTE </button>
                         </div>
                     </div>
                 </div>
@@ -124,7 +149,7 @@ export default class Bill extends Component {
                         <div className='row justify-content-center'>
                             <div className="btn-group btn-group-justified">
                                 <button className='btn-lg btn-primary' onClick={() => this.sendProposal()} > OPEN VOTE </button>
-                                <button className='btn-lg btn-primary' onClick={() => alert("X")} > PROPOSE </button>
+                                <button className='btn-lg btn-primary' disabled > PROPOSE </button>
                             </div>
                         </div>
                         <div className='row justify-content-center'>

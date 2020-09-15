@@ -16,7 +16,7 @@ export default class Login extends Component {
         this.changeUserPass = this.changeUserPass.bind(this);
         this.changeGameCode = this.changeGameCode.bind(this);
         this.changeGamePass = this.changeGamePass.bind(this);
-        this.createGame = this.createGame.bind(this);
+        this.joinGame = this.joinGame.bind(this);
     }
 
 
@@ -33,7 +33,7 @@ export default class Login extends Component {
         this.setState({ gamePass: event.target.value });
     }
 
-    createGame() {
+    joinGame() {
         this.setState({ loading: true });
         this.props.onInitGame(this.state.userName, this.state.gameCode);
         this.setState({ loading: false });
@@ -60,7 +60,7 @@ export default class Login extends Component {
                             <label htmlFor="gamePass">Game Password:</label>
                             <input type="password" className="form-control" value={this.state.gamePass} id="gamePass" onChange={this.changeGamePass} />
                         </div>
-                        <button type="button" className="btn btn-primary" onClick={this.createGame}>START</button>
+                        <button type="button" className="btn btn-primary" onClick={this.joinGame}>JOIN</button>
                         {(this.state.loading === true) && (<p>Loading...</p>)}
                     </form>
                 </div>
