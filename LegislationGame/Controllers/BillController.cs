@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using com.nordstrands.games.Legislation.Models;
+using System.Text.Json;
 
 namespace com.nordstrands.games.Legislation.Controllers
 {
@@ -21,7 +22,7 @@ namespace com.nordstrands.games.Legislation.Controllers
         }
 
         // GET: api/Bill/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Bill>> GetBill(int id)
         {
             var bill = await _context.Bill.FindAsync(id);
@@ -30,6 +31,24 @@ namespace com.nordstrands.games.Legislation.Controllers
             {
                 return NotFound();
             }
+            bill.blueCards = _context.Bill_Hand.Where(item => item.BillID == id).ToList();
+
+            return bill;
+        }
+
+        [HttpGet("{id1}/{id2}")]
+        public async Task<ActionResult<Bill>> GetBill(string id1, string id2)
+        {
+            Game g = _context.Game.SingleOrDefault(item => item.name == id1);
+            Player p = _context.Player.SingleOrDefault(item => item.username == id2);
+
+            Bill bill = await _context.Bill.SingleOrDefaultAsync(item => item.BillID == g.last_bill);
+
+            if (bill == null)
+            {
+                return NotFound();
+            }
+            bill.blueCards = _context.Bill_Hand.Where(item => item.BillID == bill.BillID).ToList();
 
             return bill;
         }
@@ -73,6 +92,12 @@ namespace com.nordstrands.games.Legislation.Controllers
         public async Task<ActionResult<Bill>> PostBill(Bill bill)
         {
             _context.Bill.Add(bill);
+            foreach (Bill_Hand blueCard in bill.blueCards)
+            {
+                blueCard.BillID = bill.BillID;
+                _context.Add(blueCard);
+            }
+            //g.last_bill = bill.BillID;
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBill", new { id = bill.BillID }, bill);

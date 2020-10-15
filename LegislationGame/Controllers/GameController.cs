@@ -39,6 +39,10 @@ namespace com.nordstrands.games.Legislation.Controllers
             Bill last_bill = _context.Bill.SingleOrDefault(item => item.BillID == game.last_bill);
             last_bill.blueCards = _context.Bill_Hand.Where(item => item.BillID == last_bill.BillID).ToList();
             game.CurrentBill = last_bill;
+            game.LAW = _context.Game_Law.Where(item => item.GameID == game.GameID).ToList();
+            /*game.LAW = (ICollection<object>)
+                       (from item in _context.Game_Law
+                       select new { item.IssueID, item.score });*/
 
             return game;
         }
@@ -85,6 +89,24 @@ namespace com.nordstrands.games.Legislation.Controllers
 
         }
 
+        [HttpGet("{id1}/{id2}/money")]
+        public async Task<ActionResult<int>> GetGP_GP(string id1, string id2)
+        {
+
+            Game g = _context.Game.SingleOrDefault(item => item.name == id1);
+            Player p = _context.Player.SingleOrDefault(item => item.username == id2);
+
+            if (g == null || p == null)
+                return NotFound();
+            //TODO: Verify that player is requesting their own
+            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(item => item.GameID == g.GameID && item.PlayerID == p.PlayerID);
+
+            //TODO: Authenticate player
+            if (gp == null)
+                return NotFound();
+            return gp.money;
+        }
+
         // PUT: api/Game/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -123,8 +145,18 @@ namespace com.nordstrands.games.Legislation.Controllers
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(Game game)
         {
+            if (_context.Game.Any(item => item.name == game.name))
+                return BadRequest();
+
             game.start_time = DateTime.UtcNow;
             _context.Game.Add(game);
+
+            Bill b = new Bill();
+            b.GameID = game.GameID;
+            b.active = true;
+            b.proposed = false;
+            _context.Bill.Add(b);
+            game.last_bill = b.BillID;
             //TODO: Generate random laws
             for(int x = 1; x <= game.deck_size; x++)
             {
@@ -133,6 +165,12 @@ namespace com.nordstrands.games.Legislation.Controllers
                 l.IssueID = x;
                 l.score = 0;
                 _context.Game_Law.Add(l);
+
+                Bill_Hand bh = new Bill_Hand();
+                bh.BillID = b.BillID;
+                bh.IssueID = x;
+                bh.score = 0;
+                _context.Bill_Hand.Add(bh);
             }
             await _context.SaveChangesAsync();
 

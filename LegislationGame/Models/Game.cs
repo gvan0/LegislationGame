@@ -25,6 +25,7 @@ namespace com.nordstrands.games.Legislation.Models
         public string password_salt { get; set; }
         public int last_bill { get; set; }
         public Bill CurrentBill { get; set; }
+        public ICollection<Game_Law> LAW { get; set; }
 
 
     }

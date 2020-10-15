@@ -22,6 +22,7 @@ export default class Bill extends Component {
         this.amendProposal = this.amendProposal.bind(this);
         this.castVote = this.castVote.bind(this);
         this.replaceIssue = this.replaceIssue.bind(this);
+        this.currentBillSize = this.currentBillSize.bind(this);
     }
 
     blankSlate(size) {
@@ -34,17 +35,30 @@ export default class Bill extends Component {
     }
 
     sendProposal() {
-        this.setState({ proposed: true, Ayes: 0, Nays: 0 });
-        /*axios.post('api/Bill', {
-            blueCards: this.state.blueCards,
-            gameID: this.props.game_id,
-            proposed: true
-        }).then(function () {
-            this.setState({ proposed: true, Ayes: 0, Nays: 0 })
-        }).catch(function (error) {
-            alert("Something went wrong: Bill.js\n" + error.message);
-            console.log(error.toJSON());
-        });*/
+        if (this.currentBillSize() < this.props.minSize) {
+            if (!window.confirm("This bill is too small. Your subcommittee will fill in the rest for you.\nDo you trust them to do the right thing?"))
+                return;
+            while (this.currentBillSize() < this.props.minSize) {
+                var b_in = Math.floor(Math.random() * 8);
+                var b_card = this.state.blueCards[b_in];
+                if (b_card.score > 0)
+                    this.replaceIssue(b_card.state.issue, b_card.state.score + 1);
+                else if (b_card.score < 0)
+                    this.replaceIssue(b_card.state.issue, b_card.state.score - 1);
+                else
+                    this.replaceIssue(b_card.state.issue, Math.random() > 0.5 ? 1 : -1);
+            }
+        }
+        //axios.post('api/Bill', {
+        //    GameID: this.props.game_id,
+        //    PlayerID: this.props.user_id,
+        //    blueCards: this.state.blueCards.map(item => item.state)
+        //}).then(function (response) {
+            this.setState({ proposed: true, Ayes: 0, Nays: 0 });
+        //}).catch(function (error) {
+        //    alert("Something went wrong: Bill.js\n" + error.message);
+        //    console.log(error.toJSON());
+        //});
     }
 
     replaceIssue(key, score) {
@@ -56,7 +70,7 @@ export default class Bill extends Component {
     }
 
     amendProposal() {
-        this.setState({proposed: false });
+        this.setState({proposed: false, Ayes: 0, Nays: 0 });
     }
 
     closeVote() {
@@ -66,45 +80,31 @@ export default class Bill extends Component {
         this.setState({ proposed: false, Ayes: 0, Nays: 0, blueCards: this.blankSlate(this.state.deckSize)})
     }
 
-    deck() {
-        return (
-            <div className="col-md-3">
-                <div className="card-container">
-                    <div className="card item" data-name="Blue-Deck">
-                        <div className="card-inner blue">
-                            <p className="card-title white-text">
-                                BLUE DECK
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+    castVote(cast) {
+        //axios.post('api/Vote', {
+        //    BillID: this.state.BillId,
+        //    vote: cast
+        //}).then(function (response) {
+            if (cast === 'A') {
+                this.setState({ Ayes: 1, Nays: 0 });
+            } else if (cast === 'N') {
+                this.setState({ Ayes: 0, Nays: 1 });
+            } else if (cast === 'P') {
+                this.setState({ Ayes: 0, Nays: 0 });
+            } else if (cast === 'M') {
+                this.amendProposal();
+            } else if (cast === 'X') {
+                this.closeVote();
+            } 
+        //}).catch(function (error) {
+        //    alert("Something went wrong: Game.js\n" + error.message);
+        //    console.log(error.toJSON());
+        //});
     }
 
-    castVote(cast) {
-        //TODO: axios.post();
-        /*axios.post('api/Bill', {
-            blueCards: this.state.blueCards,
-            proposed: true
-        }).then(function () {
-            this.setState({ proposed: true, Ayes: 0, Nays: 0 })
-        }).catch(function (error) {
-            alert("Something went wrong: Game.js\n" + error.message);
-            console.log(error.toJSON());
-        });*/
-
-        if (cast === 'A') {
-            this.setState({ Ayes: this.state.Ayes + 1 });
-        } else if (cast === 'N') {
-            this.setState({ Nays: this.state.Nays + 1 });
-        } else if (cast === 'P') {
-            this.setState({ Ayes: 0, Nays: 0 });
-        } else if (cast === 'M') {
-            this.amendProposal();
-        } else if (cast === 'X') {
-            this.closeVote();
-        } 
+    currentBillSize() {
+        var billScores = this.state.blueCards.map(item => Math.abs(item.state.score));
+        return billScores.reduce( (total,num) => total+num , 0);
     }
 
     render() {
@@ -112,13 +112,9 @@ export default class Bill extends Component {
         if (this.state.proposed === true) {
             return (
                 <div className='row justify-content-center'>
-                    <div className='col-md-8'>
-                        <div className="row blue-row">
-                            <div className="col-md-12">
-                                <div className="row users-cards">
-                                    {Slate.filter(item => item.state.score !== 0).map((law, index) => < BlueCard key={index} issue={law.state.issue} score={law.state.score} > </BlueCard>)}
-                                </div>
-                            </div>
+                    <div className="col-md-12">
+                        <div className="row users-cards">
+                            {Slate.filter(item => item.state.score !== 0).map((law, index) => < BlueCard key={index} issue={law.state.issue} score={law.state.score} > </BlueCard>)}
                         </div>
                     </div>
                     <div className='col-md-12'>
@@ -126,7 +122,7 @@ export default class Bill extends Component {
                             <div className="btn-group btn-group-justified">
                                 <button className='btn-lg btn-success' onClick={() => this.castVote('A')} > AYE ({this.state.Ayes}) </button>
                                 <button className='btn-lg btn-danger' onClick={() => this.castVote('N')} > NAY ({this.state.Nays}) </button>
-                                <button className='btn-lg btn-primary' disabled onClick={() => this.castVote('P')} > PRESENT </button>
+                                <button className='btn-lg btn-primary' onClick={() => this.castVote('P')} > PRESENT </button>
                             </div>
                         </div>
                         <div className='row justify-content-center'>
@@ -139,7 +135,7 @@ export default class Bill extends Component {
         } else {
             return (
                 <div className='row justify-content-center'>
-                    <div className='col-md-8'>
+                    <div className='col-md-12'>
                         <ol>
                             {Slate.map((law, index) =>
                                 < IssueBill key={index} issue={law.state.issue} score={law.state.score} onEdit={this.replaceIssue} />)}
@@ -148,11 +144,9 @@ export default class Bill extends Component {
                     <div className='col-md-12'>
                         <div className='row justify-content-center'>
                             <div className="btn-group btn-group-justified">
-                                <button className='btn-lg btn-primary' onClick={() => this.sendProposal()} > OPEN VOTE </button>
+                                <button className='btn-lg btn-primary' onClick={() => this.sendProposal()} > OPEN VOTE ({this.currentBillSize()}/{this.props.minSize}) </button>
                                 <button className='btn-lg btn-primary' disabled > PROPOSE </button>
                             </div>
-                        </div>
-                        <div className='row justify-content-center'>
                         </div>
                     </div>
                 </div>

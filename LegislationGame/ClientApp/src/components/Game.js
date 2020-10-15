@@ -106,10 +106,12 @@ export class Game extends Component {
             return (
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} deckSize={this.state.MyParams.state.deck_size }></Bill></div>
+                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} deckSize={this.state.MyParams.state.deck_size} minSize={this.state.MyParams.state.bill_size} game_id={this.state.game_id} user_id={this.state.user_id}></Bill></div>
                         <div className="col-md-3 col-xs-2"><Law game_id={this.state.game_id} ActiveLaw={MyLaw.state.Laws} ></Law></div>
                     </div>
-                    <Player game_id={this.state.game_id} user_id={this.state.user_id}></Player>
+                    <div className="row">
+                        <div className="col-md-9 col-xs-10"><Player game_id={this.state.game_id} user_id={this.state.user_id}></Player></div>
+                    </div>
                 </div>
             );
         }

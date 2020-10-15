@@ -13,9 +13,17 @@ export default class Law extends Component {
             Laws: props.ActiveLaw,
             pushUpdate: () => {alert("x")}
         };
+        this.currentBillSize = this.currentBillSize.bind(this);
     }
 
-    componentDidMount() {
+    currentBillSize(abs) {
+        var billScores = this.state.Laws.map(item => item.state.score);
+        if (abs)
+            billScores = billScores.map(item => Math.abs(item));
+        return billScores.reduce((total, num) => total + num, 0);
+    }
+
+    /*componentDidMount() {
         axios.get("api/Game/" + this.state.game_id)
             .then(response => {
                 const newGame = response.data;
@@ -26,7 +34,7 @@ export default class Law extends Component {
             .catch(function (response) {
                 alert("Something went wrong: Law.js\n" + response);
             });
-    }
+    }*/
 
     render() {
         var getlaws = this.props.ActiveLaw;
@@ -38,6 +46,7 @@ export default class Law extends Component {
                         <Issue key={item.state.issue} issue={item.state.issue} score={item.state.score} ></Issue>
                     )}
                 </ol>
+                <p>Law size: {this.currentBillSize(true)}<br />Law cost: {this.currentBillSize(false)}</p>
             </div>
         );
 }
