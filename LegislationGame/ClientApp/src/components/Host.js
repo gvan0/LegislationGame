@@ -2,6 +2,8 @@
 import axios from "axios";
 
 export class Host extends Component {
+    static displayName = Host.name;
+
     constructor(props) {
         super(props);
         if (props.gameCode === undefined || props.gameCode === "") {

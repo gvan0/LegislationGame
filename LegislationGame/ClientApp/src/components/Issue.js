@@ -44,7 +44,7 @@ export default class Issue extends Component {
         if (scor > 0)
             return "+" + (scor > 1 ? scor : "");
         else if (scor < 0)
-            return "–" + (scor < -1 ? -1 * scor : "");
+            return "—" + (scor < -1 ? -scor : "");
         else
             return "O";
     }

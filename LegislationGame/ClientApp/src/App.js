@@ -16,7 +16,8 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <Route path='/game' component={Game} />
+        <Route path='/game' component={Game} exact={true} />
+        <Route path='/game/:id' component={Game} />
         <Route path='/host' component={Host} />
         <Route path='/register' component={Register} />
         <Route path='/testhand' component={TestHand} />

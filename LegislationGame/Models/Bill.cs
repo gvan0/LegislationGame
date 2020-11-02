@@ -15,11 +15,11 @@ namespace com.nordstrands.games.Legislation.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BillID { get; set; }
         public int GameID { get; set; }
-        [ForeignKey(name: "GameID")]
+        [ForeignKey("GameID")]
         [JsonIgnore]
         public Game MyGame { get; set; }
         public int PlayerID { get; set; }
-        [ForeignKey(name: "PlayerID")]
+        [ForeignKey("PlayerID")]
         [JsonIgnore]
         public Player MyPlayer { get; set; }
         public bool active { get; set; }

@@ -32,20 +32,7 @@ export class Game extends Component {
     handlePassage(Slate) {
         var newLaw = this.state.MyLaw;
         for (var pb_law = 0; pb_law < Slate.length; pb_law++) {
-            var searchLaw1 = newLaw.state.Laws.find(item => item.state.issue === Slate[pb_law].state.issue);
-
-            if (searchLaw1 === undefined)
-                newLaw.state.Laws[newLaw.state.Laws.length] = Slate[pb_law];
-            else {
-                searchLaw1 = new Issue({ issue: searchLaw1.state.issue, score: searchLaw1.state.score + Slate[pb_law].state.score });
-                for (var z = 0; z < newLaw.state.Laws.length; z++) {
-                    if (newLaw.state.Laws[z].state.issue === Slate[pb_law].state.issue) {
-                        newLaw.state.Laws[z] = searchLaw1;
-                        break;
-                    }
-
-                }
-            }
+            newLaw[pb_law].score += Slate[pb_law].score;
         }
         this.setState({ MyLaw: newLaw });
 
@@ -61,17 +48,16 @@ export class Game extends Component {
         if (goalsPassed >= this.state.MyParams.state.hand_size)
             alert(this.state.MyPlayer.state.name + " wins!");*/
 
-        var MyNewPlayer = this.state.MyPlayer;
+        /*var MyNewPlayer = this.state.MyPlayer;
         MyNewPlayer.state = { name: MyNewPlayer.state.name, redCards: MyNewPlayer.state.redCards, money: MyNewPlayer.state.money + 1 };
-        this.setState({ MyPlayer: MyNewPlayer });
+        this.setState({ MyPlayer: MyNewPlayer });*/
     }
 
     joinGame(user, game) {
         axios.get("api/Game/" + game)
         .then(response => {
             const newGame = response.data;
-            const newParams = new Component({});
-            newParams.state = {
+            const newParams =  {
                 gameCode: newGame.name,
                 deck_size: newGame.deck_size,
                 bill_size: newGame.bill_size,
@@ -80,10 +66,10 @@ export class Game extends Component {
             this.setState({
                 init: true,
                 MyParams: newParams,
-                MyLaw: new Law({ game_id: game, ActiveLaw: this.blankSlate(newGame.deck_size) }),
-                MyPlayer: new Player({ name: user, Params: newParams }),
+                MyLaw: newGame.law,
                 game_id: game,
-                user_id: user
+                user_id: user,
+                bill_id: newGame.last_bill
             });
             alert("Game loaded: " + newGame.name);
         })
@@ -98,16 +84,14 @@ export class Game extends Component {
     render() {
         if (!this.state.init) {
             return (
-                <Login onInitGame={this.joinGame}> </Login>
+                <Login onInitGame={this.joinGame} game_id={this.props.match.params.id}> </Login>
             );
         } else {
-            var MyLaw = this.state.MyLaw;
-            var MyHand = this.state.MyPlayer;
             return (
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} deckSize={this.state.MyParams.state.deck_size} minSize={this.state.MyParams.state.bill_size} game_id={this.state.game_id} user_id={this.state.user_id}></Bill></div>
-                        <div className="col-md-3 col-xs-2"><Law game_id={this.state.game_id} ActiveLaw={MyLaw.state.Laws} ></Law></div>
+                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} deckSize={this.state.MyParams.deck_size} minSize={this.state.MyParams.bill_size} bill_id={this.state.bill_id}></Bill></div>
+                        <div className="col-md-3 col-xs-2"><Law game_id={this.state.game_id} ActiveLaw={this.state.MyLaw} ></Law></div>
                     </div>
                     <div className="row">
                         <div className="col-md-9 col-xs-10"><Player game_id={this.state.game_id} user_id={this.state.user_id}></Player></div>

@@ -8,7 +8,7 @@ export default class Login extends Component {
         this.state = {
             userName: "",
             userPass: "",
-            gameCode: "",
+            gameCode: this.props.game_id ?? "",
             gamePass: "",
             loading: false
         }
@@ -33,10 +33,10 @@ export default class Login extends Component {
         this.setState({ gamePass: event.target.value });
     }
 
-    joinGame() {
-        this.setState({ loading: true });
+    joinGame(event) {
+        event.target.disable();
         this.props.onInitGame(this.state.userName, this.state.gameCode);
-        this.setState({ loading: false });
+        event.target.enable();
     }
 
     render() {

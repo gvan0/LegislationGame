@@ -64,6 +64,8 @@ namespace com.nordstrands.games.Legislation.Controllers
                 return BadRequest();
             }
 
+            _context.Bill_Hand.RemoveRange(_context.Bill_Hand.Where(item => item.BillID == id));
+            _context.Bill_Hand.AddRange(bill.blueCards);
             _context.Entry(bill).State = EntityState.Modified;
 
             try
@@ -91,6 +93,7 @@ namespace com.nordstrands.games.Legislation.Controllers
         [HttpPost]
         public async Task<ActionResult<Bill>> PostBill(Bill bill)
         {
+            //bill.MyGame = _context.Game.Single(item => item.name == id);
             _context.Bill.Add(bill);
             foreach (Bill_Hand blueCard in bill.blueCards)
             {

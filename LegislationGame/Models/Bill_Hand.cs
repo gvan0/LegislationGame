@@ -15,7 +15,7 @@ namespace com.nordstrands.games.Legislation.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Bill_HandID { get; set; }
         public int BillID { get; set; }
-        [ForeignKey(name: "BillID")]
+        [ForeignKey("BillID")]
         [JsonIgnore]
         public Bill MyBill { get; set; }
         public int IssueID { get; set; }

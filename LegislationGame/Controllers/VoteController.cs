@@ -23,24 +23,21 @@ namespace com.nordstrands.games.Legislation.Controllers
 
         // POST api/<VoteController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Bill_Vote vote)
         {
-            dynamic bv = JsonSerializer.Deserialize<object>(value);
-            string game_name = bv.game_id;
-            string player_name = bv.username;
 
-            Game g = _context.Game.FirstOrDefault(item => item.name == game_name);
-            Player p = _context.Player.FirstOrDefault(item => item.username == player_name);
-            Bill b = _context.Bill.FirstOrDefault(item => item.BillID == g.last_bill);
+            //Game g = _context.Game.FirstOrDefault(item => item.name == game_name);
+            Player p = _context.Player.FirstOrDefault(item => item.PlayerID == vote.PlayerID);
+            Bill b = _context.Bill.FirstOrDefault(item => item.BillID == vote.BillID);
 
             //Bill_Vote bv = _context.Bill_Vote.FirstOrDefault(item => item.BillID == b.BillID && item.PlayerID == p.PlayerID);
             //TODO: Verify that player is part of game and owner of bill
-            switch (bv.vote[0])
+            switch (vote.vote)
             {
                 case 'Y':   //Aye
                 case 'N':   //Nay
                 case 'P':   //Present
-                    castVote(p, b, bv.vote);
+                    castVote(p, b, vote.vote);
                     break;
                 case 'A':   //Amend -- must be owner
                     //Bill b = _context.Bill.First(item => item.BillID == bill_id);
@@ -48,13 +45,12 @@ namespace com.nordstrands.games.Legislation.Controllers
                     _context.SaveChanges();
                     break;
                 case 'C':   //Close -- must be owner
-                    int game_id = bv.game_id;
 
-                    IQueryable<Game_Law> _Law = _context.Game_Law.Where(item => item.GameID == game_id).OrderBy(item => item.IssueID);
+                    IQueryable<Game_Law> _Law = _context.Game_Law.Where(item => item.GameID == b.GameID).OrderBy(item => item.IssueID);
                     IQueryable<Bill_Hand> _Hand = _context.Bill_Hand.Where(item => item.BillID == b.BillID).OrderBy(item => item.IssueID);
-                    foreach (dynamic B in bv.Bill)
+                    foreach (Bill_Hand B in _Hand)
                     {
-                        int issue_id = B.issue_id;
+                        int issue_id = B.IssueID;
                         Game_Law l = _Law.Single(item => item.IssueID == issue_id);
                         l.score += B.score;
                     }
@@ -73,10 +69,11 @@ namespace com.nordstrands.games.Legislation.Controllers
 
             if (bv == null)
             {
-                bv = new Bill_Vote();
-                bv.BillID = b.BillID;
-                bv.PlayerID = p.PlayerID;
-                bv.vote = vote;
+                bv = new Bill_Vote {
+                    BillID = b.BillID,
+                    PlayerID = p.PlayerID,
+                    vote = vote
+                };
                 _context.Bill_Vote.Add(bv);
             } else {
                 bv.vote = vote;
@@ -85,16 +82,5 @@ namespace com.nordstrands.games.Legislation.Controllers
             
         }
 
-        // PUT api/<VoteController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<VoteController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

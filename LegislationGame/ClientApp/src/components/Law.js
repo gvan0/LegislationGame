@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
 import Issue from './Issue.js';
 import './Law.css';
-import axios from 'axios';
 
 export default class Law extends Component {
     static displayName = Law.name;
@@ -10,14 +9,13 @@ export default class Law extends Component {
         super(props);
         this.state = {
             game_id: props.game_id,
-            Laws: props.ActiveLaw,
             pushUpdate: () => {alert("x")}
         };
         this.currentBillSize = this.currentBillSize.bind(this);
     }
 
     currentBillSize(abs) {
-        var billScores = this.state.Laws.map(item => item.state.score);
+        var billScores = this.props.ActiveLaw.map(item => item.score);
         if (abs)
             billScores = billScores.map(item => Math.abs(item));
         return billScores.reduce((total, num) => total + num, 0);
@@ -43,7 +41,7 @@ export default class Law extends Component {
                 <h1>ACTIVE LAWS</h1>
                 <ol className='activeLaws'>
                     {getlaws.map(item =>
-                        <Issue key={item.state.issue} issue={item.state.issue} score={item.state.score} ></Issue>
+                        <Issue key={item.game_LawID} issue={item.issueID} score={item.score} ></Issue>
                     )}
                 </ol>
                 <p>Law size: {this.currentBillSize(true)}<br />Law cost: {this.currentBillSize(false)}</p>

@@ -2,6 +2,7 @@
 import axios from "axios";
 
 export class Register extends Component {
+    static displayName = Register.name;
     constructor(props) {
         super(props);
         this.state = {
