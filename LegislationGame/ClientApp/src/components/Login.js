@@ -34,9 +34,9 @@ export default class Login extends Component {
     }
 
     joinGame(event) {
-        event.target.disable();
+        //event.target.disable();
         this.props.onInitGame(this.state.userName, this.state.gameCode);
-        event.target.enable();
+        //event.target.enable();
     }
 
     render() {

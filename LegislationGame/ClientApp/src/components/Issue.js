@@ -42,11 +42,11 @@ export default class Issue extends Component {
     scoreString() {
         var scor = this.props.score;
         if (scor > 0)
-            return "+" + (scor > 1 ? scor : "");
+            return (<b><i className='fas fa-plus'></i>{(scor > 1) && (scor)}</b>);
         else if (scor < 0)
-            return "—" + (scor < -1 ? -scor : "");
+            return (<b><i className='fas fa-minus'></i>{(scor < -1) && (0 - scor)}</b>);
         else
-            return "O";
+            return (<b>O</b>);
     }
 
     render() {
