@@ -37,7 +37,7 @@ namespace com.nordstrands.games.Legislation.Controllers
                 case 'Y':   //Aye
                 case 'N':   //Nay
                 case 'P':   //Present
-                    castVote(p, b, vote.vote);
+                    CastVote(p, b, vote.vote);
                     break;
                 case 'A':   //Amend -- must be owner
                     //Bill b = _context.Bill.First(item => item.BillID == bill_id);
@@ -62,7 +62,7 @@ namespace com.nordstrands.games.Legislation.Controllers
             }
         }
 
-        private void castVote(Player p, Bill b, char vote)
+        private void CastVote(Player p, Bill b, char vote)
         {
 
             Bill_Vote bv = _context.Bill_Vote.FirstOrDefault(item => item.BillID == b.BillID && item.PlayerID == p.PlayerID);

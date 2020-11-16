@@ -11,8 +11,8 @@ export default class IssueBill extends Issue {
         this.bumpScoreChange = this.bumpScoreChange.bind(this);
     }
 
-    bumpScoreChange(event) {
-        var ans = parseInt(event.target.value);
+    bumpScoreChange(ans) {
+        //var ans = parseInt(event.target.value);
         if (isNaN(ans))
             return;
 
@@ -36,10 +36,10 @@ export default class IssueBill extends Issue {
         return (
             <li>
                 <div className="input-group input-group-lg mb-2">
-                    <div className="input-group-prepend"><span className="input-group-text"><span className={this.iconOptions(this.state.issue)}></span></span></div>
-                    <button className="btn btn-dark" value="-1" onClick={this.bumpScoreChange}> – </button>
+                    <div className="input-group-prepend"><span className="input-group-text inicon"><span className={this.iconOptions(this.state.issue)}></span></span></div>
+                    <button className="btn btn-dark" onClick={() => this.bumpScoreChange(-1)}> <i className='fas fa-minus'></i> </button>
                     <input className={"form-control " + (this.state.score > 0 ? "plus" : this.state.score < 0 ? "minus" : "")} type="text" value={this.state.score} onChange={this.handleScoreChange} />
-                    <button className="btn btn-dark" value="1" onClick={this.bumpScoreChange}> + </button>
+                    <button className="btn btn-dark" value="1" onClick={() => this.bumpScoreChange(1)}> <i className='fas fa-plus'></i> </button>
                 </div>
             </li>
         );

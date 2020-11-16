@@ -3,6 +3,7 @@
     white-space: nowrap;
     flex-wrap: nowrap;
     height:400px;
+    padding-left: 70px;
 }
 
 .activeLaws li {

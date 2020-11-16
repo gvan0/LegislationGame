@@ -59,26 +59,29 @@ namespace com.nordstrands.games.Legislation.Controllers
             Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(item => item.GameID == g.GameID && item.PlayerID == p.PlayerID);
 
             if (gp == null) { //TODO: Authenticate player
-                gp = new Game_Player();
-                gp.GameID = g.GameID;
-                gp.PlayerID = p.PlayerID;
-                gp.active = true;
-                gp.money = 4;
+                gp = new Game_Player {
+                    GameID = g.GameID,
+                    PlayerID = p.PlayerID,
+                    active = true,
+                    money = 4
+                };
                 _context.Game_Player.Add(gp);
                 _context.SaveChanges();
             }
 
-            gp.redCards = _context.Player_Hand.Where(item => item.Game_PlayerID == gp.Game_PlayerID).OrderBy(item => item.IssueID).ToList();
-            if(gp.redCards.Count() < g.hand_size) {
+            gp.RedCards = _context.Player_Hand.Where(item => item.Game_PlayerID == gp.Game_PlayerID).OrderBy(item => item.IssueID).ToList();
+            if(gp.RedCards.Count < g.hand_size) {
                 Random rng = new Random();
-                while(gp.redCards.Count() < g.hand_size) {
-                    Player_Hand ph = new Player_Hand();
-                    ph.Game_PlayerID = gp.Game_PlayerID;
-                    //ph.GamePlayer = gp;
-                    ph.IssueID = rng.Next(g.deck_size)+1;
-                    ph.score = rng.Next(2) * 2 - 1;
-                    if(!gp.redCards.Any(item => item.IssueID == ph.IssueID)) {
-                        gp.redCards.Add(ph);
+                while(gp.RedCards.Count < g.hand_size) {
+                    Player_Hand ph = new Player_Hand
+                    {
+                        Game_PlayerID = gp.Game_PlayerID,
+                        //ph.GamePlayer = gp;
+                        IssueID = rng.Next(g.deck_size) + 1,
+                        score = rng.Next(2) * 2 - 1
+                    };
+                    if (!gp.RedCards.Any(item => item.IssueID == ph.IssueID)) {
+                        gp.RedCards.Add(ph);
                         _context.Player_Hand.Add(ph);
                         _context.SaveChanges();
                     }
@@ -151,25 +154,28 @@ namespace com.nordstrands.games.Legislation.Controllers
             game.start_time = DateTime.UtcNow;
             _context.Game.Add(game);
 
-            Bill b = new Bill();
-            b.GameID = game.GameID;
-            b.active = true;
-            b.proposed = false;
+            Bill b = new Bill {
+                GameID = game.GameID,
+                active = true,
+                proposed = false
+            };
             _context.Bill.Add(b);
             game.last_bill = b.BillID;
             //TODO: Generate random laws
             for(int x = 1; x <= game.deck_size; x++)
             {
-                Game_Law l = new Game_Law();
-                l.GameID = game.GameID;
-                l.IssueID = x;
-                l.score = 0;
+                Game_Law l = new Game_Law {
+                    GameID = game.GameID,
+                    IssueID = x,
+                    score = 0
+                };
                 _context.Game_Law.Add(l);
 
-                Bill_Hand bh = new Bill_Hand();
-                bh.BillID = b.BillID;
-                bh.IssueID = x;
-                bh.score = 0;
+                Bill_Hand bh = new Bill_Hand {
+                    BillID = b.BillID,
+                    IssueID = x,
+                    score = 0
+                };
                 _context.Bill_Hand.Add(bh);
             }
             await _context.SaveChangesAsync();

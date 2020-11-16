@@ -7,10 +7,6 @@ export default class Law extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            game_id: props.game_id,
-            pushUpdate: () => {alert("x")}
-        };
         this.currentBillSize = this.currentBillSize.bind(this);
     }
 
@@ -20,19 +16,6 @@ export default class Law extends Component {
             billScores = billScores.map(item => Math.abs(item));
         return billScores.reduce((total, num) => total + num, 0);
     }
-
-    /*componentDidMount() {
-        axios.get("api/Game/" + this.state.game_id)
-            .then(response => {
-                const newGame = response.data;
-                this.setState({
-                    Laws: newGame.law
-                });
-            })
-            .catch(function (response) {
-                alert("Something went wrong: Law.js\n" + response);
-            });
-    }*/
 
     render() {
         var getlaws = this.props.ActiveLaw;

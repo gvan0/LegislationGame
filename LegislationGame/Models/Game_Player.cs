@@ -18,6 +18,6 @@ namespace com.nordstrands.games.Legislation.Models
         public bool active { get; set; }
         public int money { get; set; }
 
-        public ICollection<Player_Hand> redCards { get; set; }
+        public ICollection<Player_Hand> RedCards { get; set; }
     }
 }
