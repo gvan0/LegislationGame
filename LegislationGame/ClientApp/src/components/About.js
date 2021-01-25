@@ -18,7 +18,7 @@ export class About extends Component {
                     </li>
                 </ul>
                 <p>This is less about political debates and more about the inherent difficulties of writing laws.</p>
-                <p>We encourage its use in the classroom as a teaching tool. A teacher's guide is available in <a href="#">the rulebook</a>.</p>
+                <p>We encourage its use in the classroom as a teaching tool. A teacher's guide is available in <a href="/Files/LEGISLATION THE GAME.pdf">the rulebook</a>.</p>
             </div>
         );
     }

@@ -17,7 +17,7 @@ export class Rules extends Component {
                     <li>If a player's red cards clue match blue cards in law, they win.</li>
                     <li>If not, start a new turn.</li>
                 </ul>
-                <p>The complete rulebook is available <a href="#">here</a> for offline play. </p>
+                <p>The complete rulebook is available <a href="/Files/LEGISLATION THE GAME.pdf">here</a> for offline play. </p>
             </div>
         );
     }
