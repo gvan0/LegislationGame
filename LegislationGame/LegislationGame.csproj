@@ -8,6 +8,7 @@
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <RootNamespace>com.nordstrands.games.Legislation</RootNamespace>
+    <UserSecretsId>d160138f-3c26-4cff-84b3-ed083a6f3ba1</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
