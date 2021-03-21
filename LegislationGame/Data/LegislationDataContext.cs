@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using com.nordstrands.games.Legislation.Models;
 
-namespace com.nordstrands.games.Legislation.Models
+namespace com.nordstrands.games.Legislation.Data
 {
     public class LegislationDataContext : DbContext
     {

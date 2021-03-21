@@ -1,3 +1,4 @@
+using com.nordstrands.games.Legislation.Data;
 using com.nordstrands.games.Legislation.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

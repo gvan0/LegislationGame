@@ -1,11 +1,11 @@
-﻿using System;
+﻿using com.nordstrands.games.Legislation.Data;
+using com.nordstrands.games.Legislation.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using com.nordstrands.games.Legislation.Models;
-using Microsoft.AspNetCore.Razor.Language;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
