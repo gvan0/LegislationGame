@@ -12,12 +12,14 @@ export class TestHand extends Component {
             deck_size: 12,
             negativeOK: true,
             positiveOK: true,
-            duplicateOK: false
+            duplicateOK: false,
+            zeroOK: false
         }
         this.changeDeckSize = this.changeDeckSize.bind(this);
         this.changeNegative = this.changeNegative.bind(this);
         this.changePositive = this.changePositive.bind(this);
         this.changeDuplicate = this.changeDuplicate.bind(this);
+        this.changeZero = this.changeZero.bind(this);
         this.addCard = this.addCard.bind(this);
         this.removeCard = this.removeCard.bind(this);
     }
@@ -38,14 +40,21 @@ export class TestHand extends Component {
         this.setState({ duplicateOK: event.target.checked });
     }
 
+    changeZero(event) {
+        this.setState({ zeroOK: event.target.checked });
+    }
+
     addCard() {
-        var isss = Math.floor(Math.random() * this.state.deck_size) + 1;
+        if (!this.state.duplicateOK && this.state.redCards.length >= this.state.deck_size)
+            return;
+
+        var isss = this.newIssueNumber();
         if (!this.state.duplicateOK) {
             while (this.state.redCards.find(item => item.state.issue === isss) !== undefined) {
-                isss = Math.floor(Math.random() * this.state.deck_size) + 1;
+                isss = this.newIssueNumber();
             }
         }
-        var scor = 0;
+        var scor;
         if (!this.state.positiveOK && this.state.negativeOK)
             scor = -1;
         else if (this.state.positiveOK && !this.state.negativeOK)
@@ -62,6 +71,13 @@ export class TestHand extends Component {
         redCard_dup[index].state = { issue: redCard_dup[index].state.issue, score: 0};
         this.setState({ redCards: redCard_dup.filter(item => item.state.score !== 0) });
         this.forceUpdate();
+    }
+
+    newIssueNumber() {
+        if (this.state.zeroOK)
+            return Math.floor(Math.random() * this.state.deck_size);
+        else
+            return Math.ceil(Math.random() * this.state.deck_size);
     }
 
     render() {
@@ -84,6 +100,10 @@ export class TestHand extends Component {
                         <br/>
                         <label className="form-check-label">
                             <input type="checkbox" className="form-check-input" checked={this.state.duplicateOK} onChange={this.changeDuplicate} /> Allow duplicates
+                        </label>
+                        <br/>
+                        <label className="form-check-label">
+                            <input type="checkbox" className="form-check-input" checked={this.state.zeroOK} onChange={this.changeZero} /> Allow zeroes
                         </label>
                     </div>
                     <br />

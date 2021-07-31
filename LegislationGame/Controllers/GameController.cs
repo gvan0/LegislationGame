@@ -64,7 +64,7 @@ namespace com.nordstrands.games.Legislation.Controllers
                     GameID = g.GameID,
                     PlayerID = p.PlayerID,
                     active = true,
-                    money = 4
+                    score_green = 0
                 };
                 _context.Game_Player.Add(gp);
                 _context.SaveChanges();
@@ -108,7 +108,7 @@ namespace com.nordstrands.games.Legislation.Controllers
             //TODO: Authenticate player
             if (gp == null)
                 return NotFound();
-            return gp.money;
+            return gp.score_green;
         }
 
         // PUT: api/Game/5

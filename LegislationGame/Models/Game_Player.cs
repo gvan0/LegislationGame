@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace com.nordstrands.games.Legislation.Models
 {
@@ -16,7 +13,9 @@ namespace com.nordstrands.games.Legislation.Models
         public int GameID { get; set; }
         public int PlayerID { get; set; }
         public bool active { get; set; }
-        public int money { get; set; }
+        public int score_blue { get; set; }
+        public int score_green { get; set; }
+        public int score_red { get; set; }
 
         public ICollection<Player_Hand> RedCards { get; set; }
     }

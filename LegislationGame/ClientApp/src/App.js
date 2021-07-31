@@ -27,7 +27,8 @@ export default class App extends Component {
         <Route path='/Rules' component={Rules} />
         <Route path='/register' component={Register} />
         <Route path='/testhand' component={TestHand} />
-        <Route path='/testboard' component={TestBoard} />
+        <Route exact path='/testboard' component={TestBoard} />
+        <Route path='/testboard/:size' component={TestBoard} />
       </Layout>
     );
   }

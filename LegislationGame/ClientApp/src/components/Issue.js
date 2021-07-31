@@ -4,7 +4,7 @@ export default class Issue extends Component {
     static displayName = Issue.name;
 
     iconOptions(indx) {
-        var options = ["empty", "fas fa-ambulance", "fas fa-bone", "fas fa-cog", "fas fa-dragon",
+        var options = ["fas fa-skull-crossbones", "fas fa-ambulance", "fas fa-bone", "fas fa-cog", "fas fa-dragon",
             "fas fa-eye", "fas fa-fingerprint", "fas fa-gas-pump", "fas fa-horse-head", "fas fa-industry",
             "fas fa-joint", "fas fa-key", "fas fa-link", "fas fa-moon", "fas fa-newspaper",
             "fas fa-oil-can", "fas fa-pepper-hot", "fas fa-quidditch", "fas fa-robot", "fas fa-satellite",
