@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
 import BlueCard from './BlueCard.js';
 import IssueBill from './Issue_Bill.js';
-import axios from 'axios';
 
 export default class TestBill extends Component {
     static displayName = TestBill.name;

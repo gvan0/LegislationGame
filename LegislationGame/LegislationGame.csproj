@@ -15,13 +15,10 @@
     <PackageReference Include="axios" Version="0.16.2" />
     <PackageReference Include="bootstrap" Version="4.6.0" />
     <PackageReference Include="entityframework" Version="6.4.4" />
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3">
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -31,8 +28,40 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="wwwroot\FontAwesome\css\**" />
+    <Compile Remove="wwwroot\FontAwesome\js\**" />
+    <Compile Remove="wwwroot\FontAwesome\less\**" />
+    <Compile Remove="wwwroot\FontAwesome\metadata\**" />
+    <Compile Remove="wwwroot\FontAwesome\scss\**" />
+    <Compile Remove="wwwroot\FontAwesome\sprites\**" />
+    <Compile Remove="wwwroot\FontAwesome\svgs\**" />
+    <Compile Remove="wwwroot\FontAwesome\webfonts\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="wwwroot\FontAwesome\css\**" />
+    <Content Remove="wwwroot\FontAwesome\js\**" />
+    <Content Remove="wwwroot\FontAwesome\less\**" />
+    <Content Remove="wwwroot\FontAwesome\metadata\**" />
+    <Content Remove="wwwroot\FontAwesome\scss\**" />
+    <Content Remove="wwwroot\FontAwesome\sprites\**" />
+    <Content Remove="wwwroot\FontAwesome\svgs\**" />
+    <Content Remove="wwwroot\FontAwesome\webfonts\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\css\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\js\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\less\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\metadata\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\scss\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\sprites\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\svgs\**" />
+    <EmbeddedResource Remove="wwwroot\FontAwesome\webfonts\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="wwwroot\FontAwesome\css\**" />
+    <None Remove="wwwroot\FontAwesome\js\**" />
+    <None Remove="wwwroot\FontAwesome\less\**" />
+    <None Remove="wwwroot\FontAwesome\metadata\**" />
+    <None Remove="wwwroot\FontAwesome\scss\**" />
+    <None Remove="wwwroot\FontAwesome\sprites\**" />
+    <None Remove="wwwroot\FontAwesome\svgs\**" />
+    <None Remove="wwwroot\FontAwesome\webfonts\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 

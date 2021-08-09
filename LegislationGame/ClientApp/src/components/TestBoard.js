@@ -10,7 +10,7 @@ export class TestBoard extends Component {
         super(props);
         var deck_size = this.props.match.params.size ?? 12;
         
-        deck_size = Math.min(Math.max(4, deck_size), 44);;
+        deck_size = Math.min(Math.max(4, deck_size), 99);
         this.state = {
             init: false,
 

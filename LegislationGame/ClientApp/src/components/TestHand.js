@@ -25,7 +25,7 @@ export class TestHand extends Component {
     }
 
     changeDeckSize(event) {
-        this.setState({ deck_size: event.target.value });
+        this.setState({ deck_size: Number(event.target.value) });
     }
 
     changeNegative(event) {
@@ -70,12 +70,11 @@ export class TestHand extends Component {
         var redCard_dup = this.state.redCards;
         redCard_dup[index].state = { issue: redCard_dup[index].state.issue, score: 0};
         this.setState({ redCards: redCard_dup.filter(item => item.state.score !== 0) });
-        this.forceUpdate();
     }
 
     newIssueNumber() {
         if (this.state.zeroOK)
-            return Math.floor(Math.random() * this.state.deck_size);
+            return Math.floor(Math.random() * (this.state.deck_size+1));
         else
             return Math.ceil(Math.random() * this.state.deck_size);
     }
