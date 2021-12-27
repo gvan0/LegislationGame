@@ -338,5 +338,9 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/LegislationGame/ScaffoldingReadMe.txt
+
+#FontAwesome
 /LegislationGame/wwwroot/FontAwesome/*/
+
+#App Settings
+/LegislationGame/appsettings.Production.json

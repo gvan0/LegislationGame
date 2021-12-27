@@ -6,7 +6,7 @@ export default class BlueCard extends Issue {
 
     render() {
         return (
-            <div className="col-md-2">
+            <div className="col-md-3">
                 <div className="card-container">
                     <div className="card item" data-name="card-1">
                         <div className="box blue">

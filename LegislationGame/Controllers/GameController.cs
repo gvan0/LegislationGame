@@ -51,19 +51,19 @@ namespace com.nordstrands.games.Legislation.Controllers
         [HttpGet("{id1}/{id2}")]
         public async Task<ActionResult<Game_Player>> GetGamePlayer(string id1, string id2)
         {
-            Game g = _context.Game.SingleOrDefault(item => item.name == id1);
-            Player p = _context.Player.SingleOrDefault(item => item.username == id2);
+            Game g = _context.Game.SingleOrDefault(game => game.name == id1);
+            Player p = _context.Player.SingleOrDefault(player => player.username == id2);
+            HttpContext.Session.SetString("game", id1);
+            HttpContext.Session.SetString("player", id2);
 
             if (g == null || p == null)
                 return NotFound();
             //TODO: Verify that player is requesting their own
-            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(item => item.GameID == g.GameID && item.PlayerID == p.PlayerID);
+            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(player => player.GameID == g.GameID && player.session_name == id2);
 
             if (gp == null) { //TODO: Authenticate player
                 gp = new Game_Player {
                     GameID = g.GameID,
-                    PlayerID = p.PlayerID,
-                    active = true,
                     score_green = 0
                 };
                 _context.Game_Player.Add(gp);
@@ -97,13 +97,13 @@ namespace com.nordstrands.games.Legislation.Controllers
         public async Task<ActionResult<int>> GetGP_GP(string id1, string id2)
         {
 
-            Game g = _context.Game.SingleOrDefault(item => item.name == id1);
-            Player p = _context.Player.SingleOrDefault(item => item.username == id2);
+            Game g = _context.Game.SingleOrDefault(game => game.name == id1);
+            Player p = _context.Player.SingleOrDefault(player => player.username == id2);
 
             if (g == null || p == null)
                 return NotFound();
             //TODO: Verify that player is requesting their own
-            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(item => item.GameID == g.GameID && item.PlayerID == p.PlayerID);
+            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(item => item.GameID == g.GameID && item.player_name == p.username);
 
             //TODO: Authenticate player
             if (gp == null)
@@ -153,16 +153,9 @@ namespace com.nordstrands.games.Legislation.Controllers
                 return BadRequest();
 
             game.start_time = DateTime.UtcNow;
+            //TODO: Encode password + salt
             _context.Game.Add(game);
 
-            Bill b = new Bill {
-                GameID = game.GameID,
-                active = true,
-                proposed = false
-            };
-            _context.Bill.Add(b);
-            game.last_bill = b.BillID;
-            //TODO: Generate random laws
             for(int x = 1; x <= game.deck_size; x++)
             {
                 Game_Law l = new Game_Law {
@@ -171,13 +164,6 @@ namespace com.nordstrands.games.Legislation.Controllers
                     score = 0
                 };
                 _context.Game_Law.Add(l);
-
-                Bill_Hand bh = new Bill_Hand {
-                    BillID = b.BillID,
-                    IssueID = x,
-                    score = 0
-                };
-                _context.Bill_Hand.Add(bh);
             }
             await _context.SaveChangesAsync();
 

@@ -75,7 +75,7 @@ export class Game extends Component {
         })
         .catch(function (error) {
             if (error.response.status === 404) {
-                alert("Game not found. Please check your spelling.");
+                alert("Game not found. Please try again.");
             } else 
                 alert("Something went wrong: Game.js\n" + error.message);
         });
