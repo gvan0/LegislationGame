@@ -9,15 +9,15 @@ export default class BlueCard extends Issue {
             <div className="col-md-3">
                 <div className="card-container">
                     <div className="card item" data-name="card-1">
-                        <div className="box blue">
-                            <p className="draw-a-card white-text">
-                                CARD {this.props.issue}
-                            </p>
-                        </div>
                         <div className="card-inner white icon">
                             <i className={this.iconOptions(this.props.issue)}></i>
                             <p className="card-title">
                                 {this.scoreString()}
+                            </p>
+                        </div>
+                        <div className="box blue">
+                            <p className="draw-a-card white-text">
+                                CARD {this.props.issue}
                             </p>
                         </div>
                     </div>
