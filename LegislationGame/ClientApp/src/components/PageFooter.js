@@ -6,7 +6,7 @@ export default class PageFooter extends Component {
     render() {
         return (
             <footer>
-                Legislation: The Game &copy; 2021
+                Legislation: The Game &copy; {new Date().getFullYear()}
             </footer>
         );
     }

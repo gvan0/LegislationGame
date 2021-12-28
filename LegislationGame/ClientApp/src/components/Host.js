@@ -49,7 +49,7 @@ export class Host extends Component {
             bill_size: parseInt(this.state.bill_size),
             hand_size: parseInt(this.state.hand_size)
         }).then( function (response) {
-            alert(response.data);
+            alert("Game ready");
         })
         .catch(function (error) {
             console.log(error.toJSON());

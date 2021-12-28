@@ -58,12 +58,13 @@ namespace com.nordstrands.games.Legislation.Controllers
             if (g == null || p == null)
                 return NotFound();
             //TODO: Verify that player is requesting their own
-            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(player => player.GameID == g.GameID && player.session_name == id2);
+            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(player => player.GameID == g.GameID && player.PlayerID == p.PlayerID);
 
             if (gp == null) { //TODO: Authenticate player
                 gp = new Game_Player {
                     GameID = g.GameID,
-                    score_green = 0
+                    PlayerID = p.PlayerID,
+                    score_red = 0
                 };
                 _context.Game_Player.Add(gp);
                 _context.SaveChanges();
@@ -102,7 +103,7 @@ namespace com.nordstrands.games.Legislation.Controllers
             if (g == null || p == null)
                 return NotFound();
             //TODO: Verify that player is requesting their own
-            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(item => item.GameID == g.GameID && item.player_name == p.username);
+            Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(player => player.GameID == g.GameID && player.PlayerID == p.PlayerID);
 
             //TODO: Authenticate player
             if (gp == null)
@@ -154,6 +155,7 @@ namespace com.nordstrands.games.Legislation.Controllers
             game.start_time = DateTime.UtcNow;
             //TODO: Encode password + salt
             _context.Game.Add(game);
+            await _context.SaveChangesAsync();
 
             for(int x = 1; x <= game.deck_size; x++)
             {
