@@ -49,9 +49,7 @@ export default class Bill extends Component {
             }
             this.setState({ blueCards: rndBlueCards });
         }
-        axios.put('api/Bill/' + this.props.bill_id, {
-            GameID: 1,
-            PlayerID: 2,
+        axios.post('api/Bill/', {
             BillID: this.props.bill_id,
             blueCards: this.state.blueCards,
             active: true,

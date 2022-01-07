@@ -37,12 +37,11 @@ namespace com.nordstrands.games.Legislation.Controllers
                 return NotFound();
 
             Bill last_bill = _context.Bill.SingleOrDefault(item => item.BillID == game.last_bill);
-            last_bill.blueCards = _context.Bill_Hand.Where(item => item.BillID == last_bill.BillID).ToList();
-            game.CurrentBill = last_bill;
+            if (game.last_bill != 0 && last_bill != null) {
+                last_bill.blueCards = _context.Bill_Hand.Where(item => item.BillID == last_bill.BillID).ToList();
+                game.CurrentBill = last_bill;
+            }
             game.LAW = _context.Game_Law.Where(item => item.GameID == game.GameID).ToList();
-            /*game.LAW = (ICollection<object>)
-                       (from item in _context.Game_Law
-                       select new { item.IssueID, item.score });*/
 
             return game;
         }
@@ -51,24 +50,33 @@ namespace com.nordstrands.games.Legislation.Controllers
         public async Task<ActionResult<Game_Player>> GetGamePlayer(string id1, string id2)
         {
             Game g = _context.Game.SingleOrDefault(game => game.name == id1);
-            Player p = _context.Player.SingleOrDefault(player => player.username == id2);
-            HttpContext.Session.SetString("game", id1);
-            HttpContext.Session.SetString("player", id2);
-
-            if (g == null || p == null)
+            if (g == null)
                 return NotFound();
-            //TODO: Verify that player is requesting their own
+            HttpContext.Session.SetInt32("game", g.GameID);
+
+            Player p = _context.Player.SingleOrDefault(player => player.cookie_session == HttpContext.Session.Id);
+            if (p == null)
+            {
+                p = new Player();
+                p.username = id2;
+                p.cookie_session = HttpContext.Session.Id;
+                _context.Player.Add(p);
+                await _context.SaveChangesAsync();
+            }
+            HttpContext.Session.SetInt32("player", p.PlayerID);
+
             Game_Player gp = await _context.Game_Player.SingleOrDefaultAsync(player => player.GameID == g.GameID && player.PlayerID == p.PlayerID);
 
-            if (gp == null) { //TODO: Authenticate player
+            if (gp == null) {
                 gp = new Game_Player {
                     GameID = g.GameID,
                     PlayerID = p.PlayerID,
                     score_red = 0
                 };
                 _context.Game_Player.Add(gp);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
+            HttpContext.Session.SetInt32("game_player", gp.Game_PlayerID);
 
             gp.RedCards = _context.Player_Hand.Where(item => item.Game_PlayerID == gp.Game_PlayerID).OrderBy(item => item.IssueID).ToList();
             if(gp.RedCards.Count < g.hand_size) {
@@ -77,7 +85,6 @@ namespace com.nordstrands.games.Legislation.Controllers
                     Player_Hand ph = new Player_Hand
                     {
                         Game_PlayerID = gp.Game_PlayerID,
-                        //ph.GamePlayer = gp;
                         IssueID = rng.Next(g.deck_size) + 1,
                         score = rng.Next(2) * 2 - 1
                     };
@@ -108,7 +115,7 @@ namespace com.nordstrands.games.Legislation.Controllers
             //TODO: Authenticate player
             if (gp == null)
                 return NotFound();
-            return gp.score_green;
+            return gp.score_red;
         }
 
         // PUT: api/Game/5
@@ -172,20 +179,20 @@ namespace com.nordstrands.games.Legislation.Controllers
         }
 
         // DELETE: api/Game/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Game>> DeleteGame(int id)
-        {
-            var game = await _context.Game.FindAsync(id);
-            if (game == null)
-            {
-                return NotFound();
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<Game>> DeleteGame(int id)
+        //{
+        //    var game = await _context.Game.FindAsync(id);
+        //    if (game == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Game.Remove(game);
-            await _context.SaveChangesAsync();
+        //    _context.Game.Remove(game);
+        //    await _context.SaveChangesAsync();
 
-            return game;
-        }
+        //    return game;
+        //}
 
         private bool GameExists(string id)
         {

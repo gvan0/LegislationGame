@@ -11,10 +11,7 @@ namespace com.nordstrands.games.Legislation.Models
         public int PlayerID { get; set; }
         public string username { get; set; }
 
-        public string password { get; set; }
-
-        public string password_salt { get; set; }
-        public string email { get; set; }
+        public string cookie_session { get; set; }
 
 
     }

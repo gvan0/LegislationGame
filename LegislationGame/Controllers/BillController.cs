@@ -94,7 +94,16 @@ namespace com.nordstrands.games.Legislation.Controllers
         [HttpPost]
         public async Task<ActionResult<Bill>> PostBill(Bill bill)
         {
-            //bill.MyGame = _context.Game.Single(item => item.name == id);
+            try
+            {
+                bill.GameID = HttpContext.Session.GetInt32("game").Value;
+                bill.PlayerID = HttpContext.Session.GetInt32("player").Value;
+            }
+            catch (NullReferenceException)
+            {
+                return BadRequest();
+            }
+
             _context.Bill.Add(bill);
             foreach (Bill_Hand blueCard in bill.blueCards)
             {

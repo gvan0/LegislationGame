@@ -1,11 +1,9 @@
 ﻿using com.nordstrands.games.Legislation.Data;
 using com.nordstrands.games.Legislation.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Text.Json;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +25,7 @@ namespace com.nordstrands.games.Legislation.Controllers
         {
 
             //Game g = _context.Game.FirstOrDefault(item => item.name == game_name);
-            Player p = _context.Player.FirstOrDefault(item => item.PlayerID == vote.PlayerID);
+            Player p = _context.Player.FirstOrDefault(item => item.PlayerID == HttpContext.Session.GetInt32("player").Value);
             Bill b = _context.Bill.FirstOrDefault(item => item.BillID == vote.BillID);
 
             //Bill_Vote bv = _context.Bill_Vote.FirstOrDefault(item => item.BillID == b.BillID && item.PlayerID == p.PlayerID);

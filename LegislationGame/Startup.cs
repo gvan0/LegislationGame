@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace com.nordstrands.games.Legislation
 {
@@ -24,6 +25,17 @@ namespace com.nordstrands.games.Legislation
 
             services.AddControllersWithViews();
             services.AddDbContext<LegislationDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LegislationDataContext")));
+
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -51,8 +63,8 @@ namespace com.nordstrands.games.Legislation
             app.UseRouting();
 
             app.UseAuthentication();
-            //app.UseIdentityServer();
             app.UseAuthorization();
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
