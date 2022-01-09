@@ -18,6 +18,7 @@ export class Game extends Component {
         this.blankSlate = this.blankSlate.bind(this);
         this.handlePassage = this.handlePassage.bind(this);
         this.joinGame = this.joinGame.bind(this);
+        this.logProposal = this.logProposal.bind(this);
     }
 
     blankSlate(size) {
@@ -29,28 +30,16 @@ export class Game extends Component {
         return blankLaw;
     }
 
+    logProposal(bill) {
+        this.setState({ bill_id: bill.billID})
+    }
+
     handlePassage(Slate) {
         var newLaw = this.state.MyLaw;
         for (var pb_law = 0; pb_law < Slate.length; pb_law++) {
             newLaw[pb_law].score += Slate[pb_law].score;
         }
         this.setState({ MyLaw: newLaw });
-
-        /*var goalsPassed = 0;
-        var phand = this.state.MyPlayer.state.redCards;
-        for (var y = 0; y < this.state.MyParams.state.hand_size; y++) {
-            var searchLaw2 = this.state.MyLaw.state.Laws.find(item => item.state.issue === phand[y].state.issue);
-            if (searchLaw2 !== undefined) {
-                if(phand[y].scoreAlign(searchLaw2.state.score))
-                    goalsPassed++;
-            }
-        }
-        if (goalsPassed >= this.state.MyParams.state.hand_size)
-            alert(this.state.MyPlayer.state.name + " wins!");*/
-
-        /*var MyNewPlayer = this.state.MyPlayer;
-        MyNewPlayer.state = { name: MyNewPlayer.state.name, redCards: MyNewPlayer.state.redCards, money: MyNewPlayer.state.money + 1 };
-        this.setState({ MyPlayer: MyNewPlayer });*/
     }
 
     joinGame(user, game) {
@@ -90,7 +79,8 @@ export class Game extends Component {
             return (
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} deckSize={this.state.MyParams.deck_size} minSize={this.state.MyParams.bill_size} bill_id={this.state.bill_id}></Bill></div>
+                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} onPropose={this.logProposal} deckSize={this.state.MyParams.deck_size}
+                            minSize={this.state.MyParams.bill_size} bill_id={this.state.bill_id}></Bill></div>
                         <div className="col-md-3 col-xs-2"><Law game_id={this.state.game_id} ActiveLaw={this.state.MyLaw} ></Law></div>
                     </div>
                     <div className="row">

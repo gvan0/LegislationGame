@@ -56,6 +56,7 @@ export default class Bill extends Component {
             proposed: true
         }).then( (response) => {
             this.setState({ proposed: true, Ayes: 0, Nays: 0 });
+            this.props.onPropose(response.data);
         }).catch(function (error) {
             alert("Something went wrong: Bill.js\n" + error.message);
             //console.log(error.toJSON());
