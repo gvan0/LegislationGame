@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using com.nordstrands.games.Legislation.Models;
+using games.Legislation.Models;
 
-namespace com.nordstrands.games.Legislation.Data
+namespace games.Legislation.Data
 {
     public class LegislationDataContext : DbContext
     {

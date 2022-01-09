@@ -1,4 +1,4 @@
-using com.nordstrands.games.Legislation.Data;
+using games.Legislation.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace com.nordstrands.games.Legislation
+namespace games.Legislation
 {
     public class Startup
     {

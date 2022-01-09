@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using com.nordstrands.games.Legislation.Data;
-using com.nordstrands.games.Legislation.Models;
+using games.Legislation.Data;
+using games.Legislation.Models;
 using System.Text.Json;
 
-namespace com.nordstrands.games.Legislation.Controllers
+namespace games.Legislation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

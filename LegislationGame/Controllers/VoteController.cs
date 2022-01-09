@@ -1,5 +1,5 @@
-﻿using com.nordstrands.games.Legislation.Data;
-using com.nordstrands.games.Legislation.Models;
+﻿using games.Legislation.Data;
+using games.Legislation.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace com.nordstrands.games.Legislation.Controllers
+namespace games.Legislation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

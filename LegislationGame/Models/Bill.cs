@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace com.nordstrands.games.Legislation.Models
+namespace games.Legislation.Models
 {
     [Table("Bill")]
     public class Bill

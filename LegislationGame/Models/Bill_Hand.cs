@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace com.nordstrands.games.Legislation.Models
+namespace games.Legislation.Models
 {
     [Table("Bill_Hand")]
     public class Bill_Hand

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace com.nordstrands.games.Legislation.Models
+namespace games.Legislation.Models
 {
     [Table("Game_Player")]
     public class Game_Player

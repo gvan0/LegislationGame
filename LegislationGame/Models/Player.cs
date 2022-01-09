@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace com.nordstrands.games.Legislation.Models
+namespace games.Legislation.Models
 {
     [Table("Player")]
     public class Player
