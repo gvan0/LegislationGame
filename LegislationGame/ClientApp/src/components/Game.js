@@ -4,6 +4,7 @@ import Bill from './Bill.js';
 import Player from './Player.js';
 import Issue from './Issue.js';
 import Login from './Login.js';
+import MessageBox from './MessageBox.js'
 import axios from 'axios';
 import './Game.css';
 
@@ -84,7 +85,8 @@ export class Game extends Component {
                         <div className="col-md-3 col-xs-2"><Law game_id={this.state.game_id} ActiveLaw={this.state.MyLaw} ></Law></div>
                     </div>
                     <div className="row">
-                        <div className="col-md-9 col-xs-10"><Player game_id={this.state.game_id} user_id={this.state.user_id}></Player></div>
+                        <div className="col-md-9 col-xs-12"><Player game_id={this.state.game_id} user_id={this.state.user_id}></Player></div>
+                        <div className="col-md-3 col-xs-12"><MessageBox game_id={this.state.game_id} user_id={this.state.user_id}></MessageBox></div>
                     </div>
                 </div>
             );

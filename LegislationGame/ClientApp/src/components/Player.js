@@ -22,7 +22,8 @@ export default class Player extends Component {
                 const newPlay = response.data;
                 this.setState({
                     redCards: newPlay.redCards.map(item => new Issue({issue: item.issueID, score: item.score})),
-                    money: newPlay.money
+                    redPoints: newPlay.score_red,
+                    greenPoints: newPlay.score_green
                 });
             })
             .catch(function (response) {
@@ -43,7 +44,10 @@ export default class Player extends Component {
                         </div>
                     </div>
                 </div>
-                <p>Money: {this.state.money}</p>
+                <p>
+                    Red points: {this.state.redPoints}<br />
+                    Green points: {this.state.greenPoints}
+                </p>
             </div>
 
         );
