@@ -47,19 +47,17 @@ export class Game extends Component {
         axios.get("api/Game/" + game)
         .then(response => {
             const newGame = response.data;
-            const newParams =  {
-                gameCode: newGame.name,
-                deck_size: newGame.deck_size,
-                bill_size: newGame.bill_size,
-                hand_size: newGame.hand_size
-            };
+            //const newParams =  {
+            //    gameCode: newGame.name,
+            //    deck_size: newGame.deck_size,
+            //    bill_size: newGame.bill_size,
+            //    hand_size: newGame.hand_size
+            //};
             this.setState({
                 init: true,
-                MyParams: newParams,
-                MyLaw: newGame.law,
                 game_id: game,
                 user_id: user,
-                bill_id: newGame.last_bill
+                Game: newGame
             });
             alert("Game loaded: " + newGame.name);
         })
@@ -77,16 +75,17 @@ export class Game extends Component {
                 <Login onInitGame={this.joinGame} game_id={this.props.match.params.id}> </Login>
             );
         } else {
+            var Game = this.state.Game;
             return (
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} onPropose={this.logProposal} deckSize={this.state.MyParams.deck_size}
-                            minSize={this.state.MyParams.bill_size} bill_id={this.state.bill_id}></Bill></div>
-                        <div className="col-md-3 col-xs-2"><Law game_id={this.state.game_id} ActiveLaw={this.state.MyLaw} ></Law></div>
+                        <div className="col-md-9 col-xs-10"><Bill onPassLaw={this.handlePassage} onPropose={this.logProposal} deckSize={Game.deck_size}
+                            minSize={Game.bill_size} bill_id={Game.last_bill}></Bill></div>
+                        <div className="col-md-3 col-xs-2"><Law game_id={this.state.game_id} ActiveLaw={Game.law} ></Law></div>
                     </div>
                     <div className="row">
                         <div className="col-md-9 col-xs-12"><Player game_id={this.state.game_id} user_id={this.state.user_id}></Player></div>
-                        <div className="col-md-3 col-xs-12"><MessageBox game_id={this.state.game_id} user_id={this.state.user_id}></MessageBox></div>
+                        <div className="col-md-3 col-xs-12"><MessageBox game_id={this.state.game_id}></MessageBox></div>
                     </div>
                 </div>
             );
