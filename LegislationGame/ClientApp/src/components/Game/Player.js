@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
-import RedCard from './RedCard.js';
-import Issue from './Issue'
+import RedCard from '../Issues/RedCard.js';
+import Issue from '../Issues/Issue.js'
 import axios from 'axios';
 
 export default class Player extends Component {

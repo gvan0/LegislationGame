@@ -1,10 +1,10 @@
 ﻿import React, { Component } from 'react';
-import Law from './Law.js';
-import Bill from './Bill.js';
-import Player from './Player.js';
-import Issue from './Issue.js';
-import Login from './Login.js';
-import MessageBox from './MessageBox.js'
+import Law from '../Law.js';
+import Bill from '../Bill.js';
+import Player from '../Player.js';
+import Issue from '../Issues/Issue.js';
+import Login from './Forms/Login.js';
+import MessageBox from '../MessageBox.js'
 import axios from 'axios';
 import './Game.css';
 

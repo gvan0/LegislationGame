@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
-import Law from './Law.js';
+import Law from '../Game/Law.js';
 import TestBill from './TestBill.js';
-import './Game.css';
+import '../Game/Game.css';
 
 export class TestBoard extends Component {
     static displayName = TestBoard.name;

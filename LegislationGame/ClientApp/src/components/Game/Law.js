@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import Issue from './Issue.js';
+import Issue from '../Issues/Issue.js';
 import './Law.css';
 
 export default class Law extends Component {

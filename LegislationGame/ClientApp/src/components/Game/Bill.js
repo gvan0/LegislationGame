@@ -1,6 +1,6 @@
 ﻿import React, {Component} from 'react';
-import BlueCard from './BlueCard.js';
-import IssueBill from './Issue_Bill.js';
+import BlueCard from '../Issues/BlueCard.js';
+import IssueBill from '../Issues/Issue_Bill.js';
 import axios from 'axios';
 
 export default class Bill extends Component {
