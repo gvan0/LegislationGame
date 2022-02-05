@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import Issue from '../Issues/Issue.js';
-import RedCard from './Issues/RedCard.js';
+import RedCard from '../Issues/RedCard.js';
 
 export class TestHand extends Component {
     static displayName = TestHand.name;

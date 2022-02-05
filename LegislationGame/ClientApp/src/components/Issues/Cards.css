@@ -1,0 +1,22 @@
+﻿
+.draw-a-card {
+    display: table-cell;
+    vertical-align: middle;
+    font-family: Oswald;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.blue {
+    background-color: #008cba;
+}
+
+
+.red {
+    background-color: #FF5351;
+}
+
+.bottom {
+    transform: rotate(180deg);
+}

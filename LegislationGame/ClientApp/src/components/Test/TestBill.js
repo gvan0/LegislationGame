@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import BlueCard from '../Issues/BlueCard.js';
-import IssueBill from '../Issue_Bill.js';
+import IssueBill from '../Issues/Issue_Bill.js';
 
 export default class TestBill extends Component {
     static displayName = TestBill.name;
