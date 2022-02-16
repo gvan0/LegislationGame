@@ -5,16 +5,20 @@
     font-family: Oswald;
     font-size: 20px;
     text-align: center;
-    cursor: pointer;
+    margin: 1rem 1rem 0 2rem;
+    float: left;
 }
 
 .blue {
     background-color: #008cba;
 }
 
-
 .red {
     background-color: #FF5351;
+}
+
+.green {
+    background-color: #28a745;
 }
 
 .bottom {

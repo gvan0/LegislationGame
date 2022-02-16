@@ -12,7 +12,7 @@ export default class BlueCard extends Issue {
                     <div className="card item" data-name="card-1">
                         <div className="box blue">
                             <p className="draw-a-card white-text">
-                                {this.scoreString()} {this.props.issue}
+                                {this.scoreString()} {this.issueString()}
                             </p>
                         </div>
                         <div className="card-inner white icon">
@@ -21,9 +21,9 @@ export default class BlueCard extends Issue {
                                 {this.scoreString()}
                             </p>
                         </div>
-                        <div className="box blue">
+                        <div className="box blue bottom">
                             <p className="draw-a-card white-text">
-                                {this.scoreString()} {this.props.issue}
+                                {this.scoreString()} {this.issueString()}
                             </p>
                         </div>
                     </div>

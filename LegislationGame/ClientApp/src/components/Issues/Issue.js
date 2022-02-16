@@ -25,6 +25,7 @@ export default class Issue extends Component {
         this.scoreAlign = this.scoreAlign.bind(this);
         this.iconOptions = this.iconOptions.bind(this);
         this.scoreString = this.scoreString.bind(this);
+        this.issueString = this.issueString.bind(this);
     }
 
     scoreAlign(ans) {
@@ -43,11 +44,15 @@ export default class Issue extends Component {
         var scor = this.props.score;
         var absScor = Math.abs(scor);
         if (scor > 0)
-            return (<b><i className='fas fa-plus'></i>{(absScor > 1) && (absScor)}</b>);
+            return (<b>{(absScor > 1) && (absScor)}<i className='fas fa-plus'></i></b>);
         else if (scor < 0)
-            return (<b><i className='fas fa-minus'></i>{(absScor > 1) && (absScor)}</b>);
+            return (<b>{(absScor > 1) && (absScor)}<i className='fas fa-minus'></i></b>);
         else
-            return (<b>O</b>);
+            return (<b> </b>);
+    }
+
+    issueString() {
+        return (<b>{this.props.issue}</b>);
     }
 
     render() {

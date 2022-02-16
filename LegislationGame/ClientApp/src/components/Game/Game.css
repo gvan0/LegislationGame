@@ -17,32 +17,11 @@ body {
   margin-bottom:50px;
 }
 
-.blue{
-  background-color: #008cba;
-}
-
-
-.red{
-  background-color: #FF5351;
-}
-
 .box {
   height: 50px;
   width: 100%;
   display: table;
   bottom: 0;
-}
-
-.draw-a-card {
-    display: table-cell;
-    vertical-align: middle;
-    font-family: Oswald;
-    font-size: 20px;
-    text-align: center;
-    cursor: pointer;
-    margin-left: 2rem;
-    margin-bottom: 0;
-    margin-top: 1rem;
 }
 
 .card-title{

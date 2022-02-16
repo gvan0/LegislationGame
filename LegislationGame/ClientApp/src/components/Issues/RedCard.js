@@ -10,10 +10,11 @@ export default class RedCard extends Issue {
             <div className="col-md-2">
                 <div className="card-container">
                     <div className="card item" data-name="card-1">
-                        <div className="box red" onClick={this.props.onDiscard}>
-                            <p className="draw-a-card white-text float-left">
-                            {this.scoreString()} {this.props.issue}
+                        <div className="box red">
+                            <p className="draw-a-card white-text">
+                                {this.scoreString()} {this.issueString()}
                             </p>
+                            <p className="draw-a-card white-text float-right" onClick={this.props.onDiscard}> X </p>
                         </div>
                         <div className="card-inner white icon">
                             <i className={this.iconOptions(this.props.issue)}></i>
@@ -21,9 +22,9 @@ export default class RedCard extends Issue {
                                 {this.scoreString()}
                             </p>
                         </div>
-                        <div className="box red bottom" onClick={this.props.onDiscard}>
-                            <p className="draw-a-card white-text float-left">
-                                {this.scoreString()} {this.props.issue}
+                        <div className="box red bottom">
+                            <p className="draw-a-card white-text">
+                                {this.scoreString()} {this.issueString()}
                             </p>
                         </div>
                     </div>
